@@ -2,17 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,ImageBackground } from 'react-native';
 import Hero from './Components/Hero';
 import SelectionTab from './Components/SelectionTab';
+import LogInPage from './Pages/LogInPage';
+import SignUpPage from './Pages/SignUpPage';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <ImageBackground source={require('./assets/burger.avif')} resizeMode='cover' style={styles.image}>
-
-        
-      </ImageBackground>
-      <View style={styles.SelectionTab}>
-        <SelectionTab/>
-      </View>
+      
+      <SignUpPage/>
     
     </View>
   );
