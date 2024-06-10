@@ -1,17 +1,29 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View,ImageBackground } from 'react-native';
 import Hero from './Components/Hero';
 import SelectionTab from './Components/SelectionTab';
 import LogInPage from './Pages/LogInPage';
 import SignUpPage from './Pages/SignUpPage';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
       
-      <SignUpPage/>
+    //   <SignUpPage/>
     
-    </View>
+    // </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName = "Home">
+        <Stack.Screen name = "SignUp" component ={SignUpPage}/>
+        <Stack.Screen name = "LogIn" component ={LogInPage}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

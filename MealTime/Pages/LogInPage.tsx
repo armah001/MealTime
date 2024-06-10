@@ -3,11 +3,22 @@ import { Text, View, TextInput, StyleSheet } from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import TitleCard from '../Components/TitleCArd';
 import { TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+type RootStackParamList = {
+    SignUp: any;
+    // Add other screen names here
+  };
+
+  type NavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const LogInPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigation = useNavigation<NavigationProp>();
 
+    
     const handleEmailChange = (text: string) => {
         setEmail(text);
     };
@@ -43,8 +54,10 @@ const LogInPage: React.FC = () => {
            <Text style={styles.linkTextStyle2}>Forgot Password? </Text>
             <CustomButton buttonWidth={335} title="Log In" />
             </View>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
 
-                <Text style={styles.linkTextStyle}>Don't have an account? SignUp </Text>
+                    <Text style={styles.linkTextStyle}>Don't have an account? SignUp </Text>
+                </TouchableOpacity>
         </View>
     );
 };
