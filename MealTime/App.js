@@ -8,6 +8,7 @@ import SignUpPage from './Pages/SignUpPage';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
+import HomePage from './Pages/HomePage';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
       <Stack.Navigator initialRouteName = "Home">
         <Stack.Screen name = "SignUp" component ={SignUpPage}/>
         <Stack.Screen name = "LogIn" component ={LogInPage}/>
+        <Stack.Screen name = "HomePage" component ={HomePage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

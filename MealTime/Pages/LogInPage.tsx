@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 type RootStackParamList = {
     SignUp: any;
+    HomePage:any;
     // Add other screen names here
   };
 
@@ -52,7 +53,7 @@ const LogInPage: React.FC = () => {
                 />
            </View>
            <Text style={styles.linkTextStyle2}>Forgot Password? </Text>
-            <CustomButton buttonWidth={335} title="Log In" />
+            <CustomButton buttonWidth={335} title="Log In" onPress={()=>navigation.navigate('HomePage')}/>
             </View>
             <View style={{flexDirection: 'row'}}>
             <Text style={styles.linkTextStyle}>Don't have an account? </Text>
