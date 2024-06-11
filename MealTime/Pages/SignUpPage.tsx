@@ -50,9 +50,13 @@ const SignUpPage: React.FC = () => {
            </View>
             <CustomButton buttonWidth={335} title="Sign Up" />
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
-                <Text style={styles.linkTextStyle}>Already have an account? Login </Text>
-            </TouchableOpacity>
+
+            <View style={{flexDirection:'row'}}>
+                <Text style={styles.linkTextStyle}>Already have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+                        <Text style={styles.linkTextStyle2}>Login </Text>
+                    </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -66,12 +70,16 @@ const styles = StyleSheet.create({
     },
     innerContainer: {
         width: '100%',
+        alignItems: 'center',
         marginTop:70
     },
     textStyle: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 20
+        marginBottom: 20,
+        textAlign: 'left',
+        alignSelf: 'flex-start',
+        marginLeft: 45
     },
     textInputStyle: {
         fontSize: 20,
@@ -85,5 +93,9 @@ const styles = StyleSheet.create({
     linkTextStyle:{
         marginTop: 10,
         color: '#000000a0'
+    },
+    linkTextStyle2:{
+        marginTop: 10,
+        color: 'blue'
     }
 });

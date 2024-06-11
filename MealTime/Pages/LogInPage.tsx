@@ -18,7 +18,7 @@ const LogInPage: React.FC = () => {
     const [password, setPassword] = useState('');
     const navigation = useNavigation<NavigationProp>();
 
-    
+
     const handleEmailChange = (text: string) => {
         setEmail(text);
     };
@@ -54,10 +54,12 @@ const LogInPage: React.FC = () => {
            <Text style={styles.linkTextStyle2}>Forgot Password? </Text>
             <CustomButton buttonWidth={335} title="Log In" />
             </View>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={styles.linkTextStyle}>Don't have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-
-                    <Text style={styles.linkTextStyle}>Don't have an account? SignUp </Text>
+                    <Text style={styles.linkTextStyle3}>SignUp </Text>
                 </TouchableOpacity>
+                </View>    
         </View>
     );
 };
@@ -71,12 +73,16 @@ const styles = StyleSheet.create({
     },
     innerContainer: {
         width: '100%',
+        alignItems: 'center',
         marginTop:70
     },
     textStyle: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 20
+        marginBottom: 20,
+        textAlign: 'left',
+        alignSelf: 'flex-start',
+        marginLeft: 45
     },
     textInputStyle: {
         fontSize: 20,
@@ -90,10 +96,14 @@ const styles = StyleSheet.create({
     linkTextStyle:{
         marginTop: 10,
     },
+    linkTextStyle3:{
+        marginTop: 10,
+        color: 'blue'
+    },
     linkTextStyle2:{
         marginBottom: 5,
         textAlign: 'right',
-        color: '#000000a0'
+        color: 'blue'
     }
   });
   
