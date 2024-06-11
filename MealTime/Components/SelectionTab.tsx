@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
        
     },
     text:{
-        color:"black",
+        color:"#162D3A",
         fontSize:25,
         fontWeight:600,
         paddingLeft:20
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
             width:10
         },
         arrowIcon:{
-            color:"black",
+            color:"#162D3A",
             paddingRight:10,
         }
   });
