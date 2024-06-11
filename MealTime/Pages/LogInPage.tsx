@@ -103,7 +103,9 @@ const styles = StyleSheet.create({
     linkTextStyle2:{
         marginBottom: 5,
         textAlign: 'right',
-        color: 'blue'
+        color: 'blue',
+        alignSelf: 'flex-end',
+        marginRight: 45
     }
   });
   
