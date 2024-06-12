@@ -10,6 +10,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import HomePage from './Pages/HomePage';
 import AdminPage from './Pages/AdminPage';
+import SuccessCard from './Components/SucessCard';
+
 
 const Stack = createStackNavigator();
 
@@ -25,7 +27,11 @@ export default function App() {
         <Stack.Screen name = "SignUp" component ={SignUpPage}/>
         <Stack.Screen name = "LogIn" component ={LogInPage}/>
         <Stack.Screen name = "HomePage" component ={HomePage}/>
+
         <Stack.Screen name = "AdminPage" component ={AdminPage}/>
+
+        <Stack.Screen name = "SuccessCard" component = {SuccessCard}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

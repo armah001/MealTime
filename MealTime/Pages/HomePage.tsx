@@ -4,15 +4,25 @@ import SelectionTab from '../Components/SelectionTab';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import ConfirmModal from '../Components/ConfirmModal';
+import { useState } from 'react';
+import SuccessCard from '../Components/SucessCard';
+        
 
-export default function HomePage() {
     type RootStackParamList = {
         AdminPage: any;
         // Add other screen names here
       };
       
       type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage'>;
-const navigation = useNavigation<NavigationProp>();
+
+
+
+
+export default function HomePage() {
+    const navigation = useNavigation<NavigationProp>();
+  const [showSuccessCard, setShowSuccessCard] = useState(false);
+
   const handleLogout = () => {
   }; 
   return (
@@ -38,9 +48,12 @@ const navigation = useNavigation<NavigationProp>();
       </TouchableOpacity>
     </View>
         </View>
-        <View style={styles.HeroBox}>
-        <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
-        </View>
+  
+        {!showSuccessCard && (
+            <View style={styles.HeroBox}>
+              <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
+            </View>
+          )}
       </View>
       
     </ImageBackground>
@@ -48,9 +61,10 @@ const navigation = useNavigation<NavigationProp>();
         <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
         </View> */}
         <View style={styles.SelectionTab}>
-        <SelectionTab/>
+        {showSuccessCard ? <SuccessCard /> : <SelectionTab onConfirm={() => setShowSuccessCard(true)} /> }
         </View>
    </View>     
+
   );
 }
 const styles = StyleSheet.create({
@@ -61,7 +75,7 @@ const styles = StyleSheet.create({
       flex:0.7,
       width:"100%",
       height:"100%",
-      marginTop:-20,
+      marginTop:-190,
       
   },
   backgroundImage: {
@@ -75,7 +89,8 @@ const styles = StyleSheet.create({
     flexDirection:"column",
     backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     justifyContent:"space-evenly",
-    alignItems:"center"
+    alignItems:"center",
+    marginTop: -190
    
   },
   salutation: {
