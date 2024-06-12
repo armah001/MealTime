@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
     line: {
         width: '100%',
         height: 1,
-        backgroundColor: '#000033', // blue black color
+        backgroundColor: 'rgba(217,217,217,1)', // blue black color
         marginBottom: 10,
+        marginTop: -10
     }
 }); 
