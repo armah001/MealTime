@@ -1,13 +1,26 @@
 import { View,StyleSheet, Touchable, TouchableOpacity,Text, ImageBackground, Platform } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+
+type RootStackParamList = {
+    AddMenu: any;
+    HomePage:any;
+    AllMeals: any;
+    Reports:any;
+  };
+
+  type NavigationProp = StackNavigationProp<RootStackParamList, 'HomePage'>;
+
+
 const AdminMenu=({data,style})=>{
+    const navigation = useNavigation<NavigationProp>();
     return (
         <View style={[styles.container,style]}>
            {data.map((menu)=>{
-            //let active=checkedValue==meal.value;
             return (
             <TouchableOpacity 
-            onPress={()=>{}}
+            onPress={()=>navigation.navigate(menu.link)}
                key={menu.id}
                >
                 <View style={styles.radioView}>

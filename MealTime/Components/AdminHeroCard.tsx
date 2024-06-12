@@ -6,8 +6,7 @@ const AdminHeroCard = () => {
         <View style={styles.container}>
             <ImageBackground source={require('../assets/burger.avif')} style={styles.cardImage} >
                 <View style={styles.overlay}/>
-                <Text style={styles.text}>Digital Hub Ghana</Text>
-                <Text style={styles.subtext}>Lunch Portal</Text>
+                <Text style={styles.text}>Manage and {'\n'}coordinate lunch effortlessly. </Text>
             </ImageBackground>
         </View>
     );
@@ -41,18 +40,10 @@ const styles = StyleSheet.create({
     text: {
         color: "white",
         fontSize: 30,
-        fontWeight:"500",
-        marginLeft:-150,
-        marginBottom:-50
+        fontWeight:"400",
+        textAlign:"left",
+        marginTop:80
         
     },
-    subtext: {
-        color: "white",
-        fontSize: 30,
-        fontWeight:"500",
-        marginLeft:-220,
-        marginBottom:-150
-        
-    }
 });
 

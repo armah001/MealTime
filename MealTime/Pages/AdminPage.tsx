@@ -21,25 +21,29 @@ const AdminPage: React.FC = () => {
             id:0,
             title:"Add Menu",
             description:"Create menu for the whole week.",
-            image:""
+            image:"",
+            link:"Add Meal"
         },
         {
             id:1,
             title:"Choose Meals",
             description:"Select meals you want to eat for the week",
-            image:""
+            image:"",
+            link:"HomePage"
         },
         {
             id:2,
             title:"All Meals",
             description:"View, add, edit and delete all meals",
-            image:""
+            image:"",
+            link:"All Meals"
         },
         {
             id:3,
             title:"Reports",
             description:"View and export data from the app",
-            image:""
+            image:"",
+            link:"Reports"
         }]
     return (
         <View style={styles.container}>
