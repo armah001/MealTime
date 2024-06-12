@@ -55,7 +55,7 @@ const SignUpPage: React.FC = () => {
                     secureTextEntry
                 />
            </View>
-            <CustomButton buttonWidth={width * 0.95} title="Sign Up" />
+            <CustomButton buttonWidth={width * 0.95} title="Sign Up" onPress={()=>{}}/>
             </View>
 
             <View style={{flexDirection:'row'}}>
