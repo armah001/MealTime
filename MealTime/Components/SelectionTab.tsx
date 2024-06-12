@@ -1,13 +1,37 @@
 
 import {useState} from 'react';
-import { StyleSheet,View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet,View, Text, TouchableOpacity, Modal } from 'react-native';
 import CustomButton from './CustomButton';
 import { AntDesign } from '@expo/vector-icons';
 import DateWidget from './DateWidget';
 import Radio from './Radio';
 
-const SelectionTab = () => {
+
+// remove later
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import ConfirmModal from './ConfirmModal';
+import SuccessCard from './SucessCard';
+
+
+
+type RootStackParamList = {
+    SuccessCard: any;
+    // Add other screen names here
+  };
+
+  type SelectionTabProps = {
+    onConfirm: () => void;
+  };
+  
+  type NavigationProp = StackNavigationProp<RootStackParamList, 'SuccessCard'>;
+
+const SelectionTab = (props: SelectionTabProps) => {
     const[meal,setMeal]=useState("Rice");
+    const navigation = useNavigation<NavigationProp>();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [showSuccessCard, setShowSuccessCard] = useState(false);
+    
     const data =[
         {
             id:0,
@@ -49,9 +73,28 @@ const SelectionTab = () => {
                     <Radio data={data} checkedValue={meal} onChange={setMeal} style={{marginBottom:15,fontSize:30}}/>
                 </View>
             <View style={styles.button}>
-            <CustomButton title='Next' buttonWidth={355} onPress={()=>{}}/>
+            <CustomButton title='Next' buttonWidth={355} onPress={() => setShowConfirmModal(true)}/>
             </View>
-           
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showConfirmModal}
+                onRequestClose={() => {
+                    setShowConfirmModal(false);
+                }}
+            >
+                <View style={styles.overlay}>
+                    <ConfirmModal 
+                        onConfirm={() => {
+                            setShowConfirmModal(false);
+                            props.onConfirm(); 
+                        }}
+                        onCancel={() => {
+                            setShowConfirmModal(false);
+                        }}
+                    />
+                </View>
+            </Modal>
         </View>
         
     );
@@ -60,6 +103,12 @@ const SelectionTab = () => {
 export default SelectionTab;
 
 const styles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     radioSelection:{
       flex:10,
       width:"100%" 
