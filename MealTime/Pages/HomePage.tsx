@@ -3,14 +3,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import SuccessCard from '../Components/SucessCard';
 import SelectionTab from '../Components/SelectionTab';
-        
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
-    type RootStackParamList = {
-        AdminPage: any;
-        // Add other screen names here
-      };
+type RootStackParamList = {
+  AdminPage: any;
+    // Add other screen names here
+};
       
-      type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage'>;
 
 export default function HomePage() {
     const navigation = useNavigation<NavigationProp>();
@@ -30,6 +31,13 @@ export default function HomePage() {
         <View style={styles.content}>
           <View style={styles.salutation}>
             <Text style={styles.text}>Hi, Eric!</Text>
+            <View>
+            </View>    
+            <View style={styles.settingsIcon}>
+              <TouchableOpacity onPress={()=>navigation.navigate('AdminPage')}>
+                <MaterialIcons name="admin-panel-settings" size={24} color="white" />
+              </TouchableOpacity>
+              </View>
             <View style={styles.logOutIcon}>
               <TouchableOpacity onPress={handleLogout}>
                 <MaterialIcons name="logout" size={24} color="white" />
