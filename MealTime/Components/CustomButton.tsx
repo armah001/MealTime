@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'; 
 
-const CustomButton = ({ buttonWidth, title , onPress}) => {
+const CustomButton = ({ buttonWidth, title , onPress, backgroundcolor}) => {
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, { width: buttonWidth }]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, { width: buttonWidth , backgroundColor: backgroundcolor ?? "#162D3A"}]}>
             <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
     );
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         height:44,
         borderRadius:4,
         alignItems: "center",
-        padding: 10
+        padding: 10,
     },
     buttonText: {
         color: 'white',
@@ -29,6 +29,6 @@ CustomButton.propTypes = {
     buttonWidth: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     onPress: PropTypes.func.isRequired,
-};
+    backgroundcolor: PropTypes.string};
 
 export default CustomButton;

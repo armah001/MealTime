@@ -11,6 +11,7 @@ import React from 'react';
 import HomePage from './Pages/HomePage';
 import AdminPage from './Pages/AdminPage';
 import SuccessCard from './Components/SucessCard';
+import FailCard from './Components/UnsucessfulCard';
 
 
 const Stack = createStackNavigator();
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Screen name = "AdminPage" component ={AdminPage}/>
 
         <Stack.Screen name = "SuccessCard" component = {SuccessCard}/>
+        <Stack.Screen name = "UnsuccesfulCard" component = {FailCard}/>
 
       </Stack.Navigator>
     </NavigationContainer>

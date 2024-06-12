@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import SuccessCard from '../Components/SucessCard';
+import FailCard from '../Components/UnsucessfulCard';
 import SelectionTab from '../Components/SelectionTab';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
