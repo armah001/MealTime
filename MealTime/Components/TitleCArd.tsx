@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     cardImage: {
-        width: width * 0.9,
+        width: width * 0.95,
         height: height * 0.2,
         resizeMode: 'cover',
         borderRadius: 10, 

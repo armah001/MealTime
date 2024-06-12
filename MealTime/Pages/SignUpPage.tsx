@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, StyleSheet, TouchableOpacity,ScrollView, KeyboardAvoidingView,Platform, Dimensions } from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import TitleCard from '../Components/TitleCArd';
 import { useNavigation } from '@react-navigation/native';
@@ -31,7 +31,14 @@ const SignUpPage: React.FC = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+        <ScrollView contentContainerStyle={styles.container}
+            automaticallyAdjustKeyboardInsets
+            showsVerticalScrollIndicator={false}
+            >
             <TitleCard/>
             <View style={styles.innerContainer}>
             <Text style={styles.textStyle}>Sign Up </Text>
@@ -48,7 +55,7 @@ const SignUpPage: React.FC = () => {
                     secureTextEntry
                 />
            </View>
-            <CustomButton buttonWidth={335} title="Sign Up" />
+            <CustomButton buttonWidth={width * 0.95} title="Sign Up" />
             </View>
 
             <View style={{flexDirection:'row'}}>
@@ -57,11 +64,14 @@ const SignUpPage: React.FC = () => {
                         <Text style={styles.linkTextStyle2}>Login </Text>
                     </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
+        </KeyboardAvoidingView>
     );
 };
 
 export default SignUpPage;
+
+const {width} = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
     container: {
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'left',
         alignSelf: 'flex-start',
-        marginLeft: 45
+        //marginLeft: 0
     },
     textInputStyle: {
         fontSize: 20,
@@ -87,7 +97,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 5,
-        width: 335,
+       // width: 335,
+        width: width * 0.95,
         marginBottom: 25 
     },
     linkTextStyle:{
