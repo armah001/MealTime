@@ -2,8 +2,12 @@ import { StyleSheet, Text, View,ImageBackground,TouchableOpacity } from 'react-n
 import Hero from '../Components/Hero';
 import SelectionTab from '../Components/SelectionTab';
 import { MaterialIcons } from '@expo/vector-icons';
+import ConfirmModal from '../Components/ConfirmModal';
+import { useState } from 'react';
+import SuccessCard from '../Components/SucessCard';
 
 export default function HomePage() {
+  const [showSuccessCard, setShowSuccessCard] = useState(false);
   const handleLogout = () => {
     // Implement your logout logic here
   }; 
@@ -23,9 +27,12 @@ export default function HomePage() {
       </TouchableOpacity>
     </View>
         </View>
-        <View style={styles.HeroBox}>
-        <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
-        </View>
+  
+        {!showSuccessCard && (
+            <View style={styles.HeroBox}>
+              <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
+            </View>
+          )}
       </View>
       
     </ImageBackground>
@@ -33,10 +40,8 @@ export default function HomePage() {
         <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
         </View> */}
         <View style={styles.SelectionTab}>
-        <SelectionTab/>
+        {showSuccessCard ? <SuccessCard /> : <SelectionTab onConfirm={() => setShowSuccessCard(true)} /> }
         </View>
-        
-
    </View>
       
   );
@@ -52,7 +57,7 @@ const styles = StyleSheet.create({
       flex:0.7,
       width:"100%",
       height:"100%",
-      marginTop:-20,
+      marginTop:-190,
       
   },
   backgroundImage: {
@@ -66,7 +71,8 @@ const styles = StyleSheet.create({
     flexDirection:"column",
     backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     justifyContent:"space-evenly",
-    alignItems:"center"
+    alignItems:"center",
+    marginTop: -190
    
   },
   salutation: {
