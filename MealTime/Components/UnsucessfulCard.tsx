@@ -23,7 +23,7 @@ const FailCard : React.FC = () => {
         <View style={styles.container}>
             <Image 
                 style={styles.image}
-                source={require('../assets/cuate.png')} 
+                source={require('../assets/cuate1.png')} 
             />
             <Text style={styles.text}>Unsuccessful</Text>
             <Text style={styles.text}>The meals you have chosen for the week was not recorded sucessfuly!!!</Text>
