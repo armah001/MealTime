@@ -49,7 +49,7 @@ const SelectionTab = () => {
                     <Radio data={data} checkedValue={meal} onChange={setMeal} style={{marginBottom:15,fontSize:30}}/>
                 </View>
             <View style={styles.button}>
-            <CustomButton title='Next' buttonWidth={355}/>
+            <CustomButton title='Next' buttonWidth={355} onPress={()=>{}}/>
             </View>
            
         </View>
