@@ -7,7 +7,7 @@ const SalutationBar=()=>{
              <Text style={styles.text}>Hi, Eric!</Text>
         <View style={styles.logOutIcon}>
       <TouchableOpacity onPress={()=>{}}>
-        <MaterialIcons name="logout" size={24} color="white" />
+        <MaterialIcons name="logout" size={24} color="#162D3A" />
       </TouchableOpacity>
     </View>
     </View>
@@ -20,13 +20,17 @@ const styles=StyleSheet.create({
         flex: 1,
         flexDirection:"row",
         justifyContent:"space-between",
-        alignItems:"center"
+        alignItems:"center",
+        alignContent:"center",
+
     },
     text:{
         fontSize:20,
         fontWeight:"600",
-        color:"#fff",
+        color:"#162D3A",
         padding: 30,
+        paddingLeft: 12,
+        paddingTop:20
       },
       logOutIcon:{
         justifyContent: 'center',

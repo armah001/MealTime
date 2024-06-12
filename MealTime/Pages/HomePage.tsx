@@ -3,9 +3,19 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import SuccessCard from '../Components/SucessCard';
 import SelectionTab from '../Components/SelectionTab';
+        
+
+    type RootStackParamList = {
+        AdminPage: any;
+        // Add other screen names here
+      };
+      
+      type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage'>;
 
 export default function HomePage() {
+    const navigation = useNavigation<NavigationProp>();
   const [showSuccessCard, setShowSuccessCard] = useState(false);
+
   const handleLogout = () => {
     // Implement your 
     //logout logic here
@@ -27,7 +37,7 @@ export default function HomePage() {
             </View>
           </View>
 
-          {!showSuccessCard && (
+                   {!showSuccessCard && (
             <View style={styles.HeroBox}>
               <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
             </View>
@@ -41,7 +51,6 @@ export default function HomePage() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,10 +104,19 @@ const styles = StyleSheet.create({
   logOutIcon: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 40,
-    height: 40,
-    backgroundColor: "rgba(217,217,217,0.4)",
-    borderRadius: 100,
-    marginRight: 20,
+    width:40,
+    height:40,
+    backgroundColor:"rgba(217,217,217,0.4)",
+    borderRadius:100,
+    marginRight:20,
+  },
+  settingsIcon:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    width:40,
+    height:40,
+    backgroundColor:"rgba(217,217,217,0.4)",
+    borderRadius:100,
+    marginRight:-40,
   }
 });
