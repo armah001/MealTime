@@ -7,7 +7,8 @@ import SelectionTab from '../Components/SelectionTab';
 export default function HomePage() {
   const [showSuccessCard, setShowSuccessCard] = useState(false);
   const handleLogout = () => {
-    // Implement your logout logic here
+    // Implement your 
+    //logout logic here
   };
 
   return (
