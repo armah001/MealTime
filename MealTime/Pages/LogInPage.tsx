@@ -6,6 +6,10 @@ import { TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
+import { REACT_NATIVE_BASE_URL } from '@env';
+
+//import { REACT_NATIVE_BASE_URL} from '@env';
+
 type RootStackParamList = {
     SignUp: any;
     HomePage:any;
@@ -18,7 +22,8 @@ const LogInPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation<NavigationProp>();
-
+    const [passwordError, setPasswordError] = useState('');
+    const [logMessage, setLogMessage] = useState('');
 
     const handleEmailChange = (text: string) => {
         setEmail(text);
@@ -26,12 +31,45 @@ const LogInPage: React.FC = () => {
 
     const handlePasswordChange = (text: string) => {
         setPassword(text);
+        if (!text) {
+            setPasswordError('Password is required');
+        } else {
+            setPasswordError('');
+        }
     };
 
-    const handleSubmit = () => {
-        // Add your login logic here
-        console.log('Email:', email);
-        //console.log('Password:', password);
+    const handleSubmit = async () => {
+        if (!email || !password) {
+            setLogMessage('Please fill in all fields');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${REACT_NATIVE_BASE_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                //await AsyncStorage.setItem('accessToken', data.accessToken);
+                console.log('User logged in successfully');
+                navigation.navigate('HomePage'); // Move this line here
+            } else {
+                console.log('Failed to log in:', data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setLogMessage('An error occurred: ' + error.message);
+
+        }
     };
 
     return (
@@ -43,9 +81,11 @@ const LogInPage: React.FC = () => {
             automaticallyAdjustKeyboardInsets
             showsVerticalScrollIndicator={false}
             >
-
+98 
             <TitleCard/>
             <View style={styles.innerContainer}>
+                {logMessage ? <Text style={{color: 'red'}}>{logMessage}</Text> : null}
+
             <Text style={styles.textStyle}>Login </Text>
             <View>
                 <TextInput style={styles.textInputStyle}
@@ -58,11 +98,17 @@ const LogInPage: React.FC = () => {
                     value={password}
                     onChangeText={handlePasswordChange}
                     secureTextEntry
+                    
                 />
+                {passwordError ? <Text style={{color: 'red'}}>{passwordError}</Text> : null}
            </View>
            <Text style={styles.linkTextStyle2}>Forgot Password? </Text>
-            <CustomButton buttonWidth={width * 0.95} title="Log In" onPress={()=>navigation.navigate('HomePage')}/>
-            </View>
+            <CustomButton 
+                buttonWidth={width * 0.95} 
+                title="Log In" 
+                onPress={handleSubmit }
+                />       
+         </View>
             <View style={{flexDirection: 'row'}}>
             <Text style={styles.linkTextStyle}>Don't have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
