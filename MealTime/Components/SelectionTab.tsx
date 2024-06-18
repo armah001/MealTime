@@ -31,37 +31,37 @@ const SelectionTab = (props: SelectionTabProps) => {
     const navigation = useNavigation<NavigationProp>();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessCard, setShowSuccessCard] = useState(false);
-    
+
     const data =[
         {
             id:0,
             lable:"Jollof Rice with Chicken, Coleslaw, and Soda",
             value:"Jollof",
-            image:""
+            image:"https://cdn.jwplayer.com/v2/media/BRU94itM/poster.jpg?width=720"
         },
         {
             id:1,
             lable:"Fried Rice with Fish, Mixed Vegetables, and Juice",
             value:"Gari",
-            image:""
+            image:"https://www.kitchensanctuary.com/wp-content/uploads/2020/04/Chicken-Fried-Rice-square-FS-.jpg"
         },
         {
             id:2,
             lable:"Spaghetti Bolognese with Garlic Bread and Lemonade",
             value:"Rice",
-            image:""
+            image:"https://www.slimmingeats.com/blog/wp-content/uploads/2010/04/spaghetti-bolognese-36.jpg"
         },
         {
             id:3,
             lable:"Grilled Chicken with Mashed Potatoes, Gravy, and Iced Tea",
             value:"Khebab",
-            image:""
+            image:"https://marleyspoon.com/media/recipes/44803/main_photos/large/pan_roasted_chicken_mashed_potatoes-d256922d8203656d85eb9fa0b473ea75.jpeg"
         },
         {
             id:4,
             lable:"Vegetable Stir-Fry with Tofu, Steamed Rice, and Green Tea",
             value:"pizza",
-            image:""
+            image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDaVcll19kN9w5p2AKqn33CtJYOzzUQiWb0A&s"
         }
 
     ]
@@ -111,7 +111,9 @@ const styles = StyleSheet.create({
     },
     radioSelection:{
       flex:10,
-      width:"100%" 
+      width:"98%",
+      paddingBottom:20
+
     },
     button:{
         marginBottom:50
