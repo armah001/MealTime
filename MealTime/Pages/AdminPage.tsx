@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import TitleCard from '../Components/TitleCArd';
@@ -7,6 +7,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import SalutationBar from '../Components/SalutationBar';
 import AdminHeroCard from '../Components/AdminHeroCard';
 import AdminMenu from '../Components/AdminMenu';
+import * as SecureStore from 'expo-secure-store';
+import { AuthContext} from '../Components/AuthContext';
 
 type RootStackParamList = {
   LogIn: any;
@@ -16,6 +18,15 @@ type RootStackParamList = {
 type NavigationProp = StackNavigationProp<RootStackParamList, 'LogIn'>;
 
 const AdminPage: React.FC = () => {
+    const { clearFields } = useContext(AuthContext);
+    const navigation = useNavigation<NavigationProp>();
+
+    const handleLogout = async () => {
+        await SecureStore.deleteItemAsync("accessToken");
+        clearFields();
+        navigation.navigate('LogIn');
+    };
+
     const data =[
         {
             id:0,

@@ -1,25 +1,31 @@
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import SuccessCard from '../Components/SucessCard';
 import SelectionTab from '../Components/SelectionTab';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
+import { AuthContext} from '../Components/AuthContext';
 
 type RootStackParamList = {
   AdminPage: any;
+  LogIn: any;
     // Add other screen names here
 };
       
-type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage', 'LogIn'>;
 
 export default function HomePage() {
     const navigation = useNavigation<NavigationProp>();
-  const [showSuccessCard, setShowSuccessCard] = useState(false);
+    const [showSuccessCard, setShowSuccessCard] = useState(false);
+    const { clearFields } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    // Implement your 
-    //logout logic here
+
+  const handleLogout = async () => {
+    await SecureStore.deleteItemAsync("accessToken");
+    clearFields();
+    navigation.navigate('LogIn');
   };
 
   return (
@@ -57,6 +63,7 @@ export default function HomePage() {
         {showSuccessCard ? <SuccessCard /> : <SelectionTab onConfirm={() => setShowSuccessCard(true)} />}
       </View>
     </View>
+    
   );
 }
 const styles = StyleSheet.create({
