@@ -12,13 +12,14 @@
     "@react-navigation/stack": "^6.3.29",
     "@types/react": "~18.2.79",
     "expo": "~51.0.11",
+    "expo-secure-store": "~13.0.1",
     "expo-status-bar": "~1.12.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.74.2",
-    "typescript": "~5.3.3",
+    "react-native-dotenv": "^3.4.11",
     "rn-secure-storage": "3.0.1",
-    "expo-secure-store": "~13.0.1"
+    "typescript": "~5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -12,6 +12,7 @@ import HomePage from './Pages/HomePage';
 import AdminPage from './Pages/AdminPage';
 import SuccessCard from './Components/SucessCard';
 import FailCard from './Components/UnsucessfulCard';
+import AllMenuPage from './Pages/AllMenuPage';
 
 
 const Stack = createStackNavigator();
@@ -28,9 +29,8 @@ export default function App() {
         <Stack.Screen name = "SignUp" component ={SignUpPage}/>
         <Stack.Screen name = "LogIn" component ={LogInPage}/>
         <Stack.Screen name = "HomePage" component ={HomePage}/>
-
+        <Stack.Screen name = "AllMenuPage" component ={AllMenuPage}/>
         <Stack.Screen name = "AdminPage" component ={AdminPage}/>
-
         <Stack.Screen name = "SuccessCard" component = {SuccessCard}/>
         <Stack.Screen name = "UnsuccesfulCard" component = {FailCard}/>
 

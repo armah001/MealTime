@@ -12,6 +12,7 @@ import { AuthContext} from '../Components/AuthContext';
 
 type RootStackParamList = {
   LogIn: any;
+  AllMenuPage: any;
   // Add other screen names here
 };
 
@@ -33,7 +34,7 @@ const AdminPage: React.FC = () => {
             title:"Add Menu",
             description:"Create menu for the whole week.",
             image:"",
-            link:"Add Meal"
+            link:"AllMenuPage"
         },
         {
             id:1,
