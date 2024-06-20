@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   text: {
     fontSize: 20,

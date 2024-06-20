@@ -24,7 +24,7 @@ const SuccessCard : React.FC = () => {
                 style={styles.image}
                 source={require('../assets/cuate.png')} 
             />
-            <Text style={styles.text}>Successful</Text>
+            <Text style={styles.text1}>Successful</Text>
             <Text style={styles.text}>The meals you have chosen for the week has sucessfuly been recorded!!!</Text>
             <View style={styles.button}>
                 <CustomButton buttonWidth={355} title="View meals for the week" onPress={() => {}} />       
@@ -56,6 +56,15 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'black',
+        fontSize: 20,
+        fontWeight: '600',
+        paddingLeft: 20,
+        paddingTop: 20,
+        textAlign: 'center',
+        marginRight: 20
+    },
+    text1: {
+        color: '#316F42',
         fontSize: 20,
         fontWeight: '600',
         paddingLeft: 20,

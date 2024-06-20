@@ -25,7 +25,7 @@ const FailCard : React.FC = () => {
                 style={styles.image}
                 source={require('../assets/cuate1.png')} 
             />
-            <Text style={styles.text}>Unsuccessful</Text>
+            <Text style={styles.text1}>Unsuccessful</Text>
             <Text style={styles.text}>The meals you have chosen for the week was not recorded sucessfuly!!!</Text>
             <View style={styles.button}>
             <View style={{ marginBottom: 10 }}>
@@ -64,6 +64,15 @@ const styles = StyleSheet.create({
     image: {
         width: 200,
         height: 200,
+    },
+    text1: {
+        color: '#D85151',
+        fontSize: 20,
+        fontWeight: '600',
+        paddingLeft: 20,
+        paddingTop: 20,
+        textAlign: 'center',
+        marginRight: 20
     },
     text: {
         color: 'black',
