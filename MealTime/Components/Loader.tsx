@@ -15,7 +15,7 @@ const Loader: React.FC<LoaderProps> = ({ loading }) => {
     >
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>
-          <ActivityIndicator animating={loading} color="#0000ff" size="large" />
+          <ActivityIndicator animating={loading} color="#162D3A" size="large" />
         </View>
       </View>
     </Modal>
