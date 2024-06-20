@@ -25,7 +25,12 @@ export default function App() {
     
     // </View>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName = "Home" screenOptions={{ unmountOnBlur: true }}>
+      <Stack.Navigator initialRouteName = "Home"
+       screenOptions={{ unmountOnBlur: true,
+        headerLeft: null,
+        headerShown: false,
+       }}>
+
         <Stack.Screen name = "SignUp" component ={SignUpPage}/>
         <Stack.Screen name = "LogIn" component ={LogInPage}/>
         <Stack.Screen name = "HomePage" component ={HomePage}/>
