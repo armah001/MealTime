@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   backgroundImage: {
+    paddingTop:40,
     flex: 0.3,
     width: "100%",
     resizeMode: 'cover',

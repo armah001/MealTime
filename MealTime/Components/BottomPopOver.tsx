@@ -58,7 +58,7 @@ const BottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton buttonWidth={370} title='Create Menu' />
+                    <CustomButton buttonWidth={370} title='Create Menu' onPress={()=>{}}/>
                 </View>
             </View>
         </Animated.View>
