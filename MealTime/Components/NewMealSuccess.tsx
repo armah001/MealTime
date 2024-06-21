@@ -1,49 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusBar, TextInput, Keyboard, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusBar, TextInput, Keyboard, Animated, Image} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from './CustomButton';
-import { REACT_NATIVE_BASE_URL } from '@env';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
-type RootStackParamList = {
-    AllMenuPage: any;
-  };
-
-type NavigationProp = StackNavigationProp<RootStackParamList, 'AllMenuPage'>;
-
-const BottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
+const NewMealSuccess = ({ onConfirm, onCancel, compHeight }) => {
     const [menuName, setMenuName] = useState('');
     const [keyboardOffset, setKeyboardOffset] = useState(new Animated.Value(0));
-    const navigation = useNavigation<NavigationProp>();
-
-    const handleMenuChange = (text) => {
+    
+    const handleEmailChange = (text) => {
         setMenuName(text);
-    };
-
-    const addMenu = async () => {
-        try {
-            const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/AddMenu`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    menuName: menuName,
-                }),
-            });
-
-            if (response.ok) {
-                console.log('Menu added successfully with status code:', response.status);
-                onConfirm(); // Optional: Call a callback function upon successful addition
-            } else {
-                console.log('Failed to add menu:', response.status);
-                // Handle failure scenario here if needed
-            }
-        } catch (error) {
-            console.error('Error adding menu:', error);
-            // Handle error scenario here if needed
-        }
     };
 
     useEffect(() => {
@@ -75,32 +40,35 @@ const BottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
         <Animated.View style={[styles.mainContainer, { transform: [{ translateY: keyboardOffset }] }]}>
             <View style={styles.container}>
                 <View style={styles.cardHeader}>
-                    <Text style={styles.title}>New Menu</Text>
+                    <Text style={styles.title}>Edit Meal</Text>
                     <TouchableOpacity style={styles.closeIcon} onPress={onCancel}>
-                        <MaterialCommunityIcons name="window-close" size={24} color="black" />
+                        <Image 
+                            style={styles.uploadIcon}
+                            source={require('../assets/Group.png')} />
                     </TouchableOpacity>
                 </View>
                 
                 <View style={styles.line} />
+                
 
                 <View style={styles.inputSection}>
-                    <Text style={styles.text}>Menu Name</Text>
+                    <Text style={styles.text}>Meal Name</Text>
                     <TextInput
                         style={styles.textInputStyle}
-                        placeholder='Enter name of the menu'
+                        placeholder='Enter name of the Meal'
                         value={menuName}
-                        onChangeText={handleMenuChange}
+                        onChangeText={handleEmailChange}
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton buttonWidth={370} title='Create Menu' onPress={addMenu}/>
+                    <CustomButton buttonWidth={370} title='Close' />
                 </View>
             </View>
         </Animated.View>
     );
 };
 
-export default BottomPopOver;
+export default NewMealSuccess;
 
 const { width, height } = Dimensions.get('screen');
 
@@ -196,5 +164,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(217,217,217,1)',
         marginBottom: 10,
         marginTop: -10
-    }
+    },
+    imageUploadSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    uploadIcon: {
+        marginLeft: 20,
+    },
+    
 });
