@@ -131,6 +131,8 @@ const AllMenuPage: React.FC = () => {
           </View>
         ) : (
           <ScrollView contentContainerStyle={styles.menuView}>
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
             {menus.map((menu) => (
               <MenuCard
                 key={menu.id}
