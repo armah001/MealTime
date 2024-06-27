@@ -13,30 +13,36 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
     }, [activeMenuId, data.id]);
   
     const toggleSwitch = async () => {
-      setIsEnabled(previousState => !previousState);
-      const activationCode = !isEnabled; // Toggle the activation status
-  
-      try {
-        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(data.menuName)}&ActivationCode=${activationCode}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-  
-        if (!response.ok) {
-          throw new Error(`Failed to ${activationCode ? 'activate' : 'deactivate'} menu`);
+        setIsEnabled(previousState => !previousState); // Optimistically toggle UI state
+      
+        const newActivationCode = !isEnabled; // Determine new activation code
+      
+        try {
+          const encodedMenuName = encodeURIComponent(data.menuName);
+          const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodedMenuName}&ActivationCode=${newActivationCode}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (!response.ok) {
+            throw new Error(`Failed to ${newActivationCode ? 'activate' : 'deactivate'} menu`);
+          }
+      
+          // Update local state and notify parent component
+          setIsEnabled(newActivationCode);
+          onMenuActivation(newActivationCode ? data.id : null); // Notify parent about activation/deactivation
+        } catch (error) {
+          console.error(`Error ${newActivationCode ? 'activating' : 'deactivating'} menu:`, error);
+          // Restore previous UI state on error
+          setIsEnabled(previousState => !previousState);
+        
         }
-  
-        // Update local state and notify parent component
-        setIsEnabled(activationCode);
-        onMenuActivation(activationCode ? data.id : null); // Notify parent about activation/deactivation
-      } catch (error) {
-        console.error(`Error ${activationCode ? 'activating' : 'deactivating'} menu:`, error);
-        // Restore previous state if activation/deactivation fails
-        setIsEnabled(previousState => !previousState);
-      }
-    };
+      };
+      
+      
+      
   
     const handleDeleteMenu = async () => {
         try {
@@ -87,7 +93,7 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
     //         setIsEnabled(previousState => !previousState);
     //     }
     // };
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    //const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
 
         <View style={styles.container}>
