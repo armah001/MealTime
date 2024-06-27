@@ -28,14 +28,14 @@ const LogInPage: React.FC = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [emailError, setEmailError] = useState('');
     
-    useEffect(() => {
-        const checkToken = async () => {
-            const token = await SecureStore.getItemAsync("accessToken");
-            if (token) {
-                console.log('User already logged in');
-                navigation.navigate('HomePage');
-            }
-        };
+        useEffect(() => {
+            const checkToken = async () => {
+                const token = await SecureStore.getItemAsync("accessToken");
+                if (token) {
+                    console.log('User already logged in');
+                    navigation.navigate('HomePage');
+                }
+            };
 
         checkToken();
     }, []);
@@ -72,6 +72,10 @@ const LogInPage: React.FC = () => {
     };
 
     const handleSubmit = async () => {
+
+        // Clear existing token if it exists
+        //await SecureStore.deleteItemAsync("accessToken");
+
         if (!email || !password) {
             setLogMessage('Please fill in all fields');
             return;
