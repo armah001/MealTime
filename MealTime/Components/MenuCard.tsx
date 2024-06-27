@@ -87,7 +87,7 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
     //         setIsEnabled(previousState => !previousState);
     //     }
     // };
-
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     return (
 
         <View style={styles.container}>
@@ -103,7 +103,7 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
 
                 <View>
                     <TouchableOpacity>
-                        <EvilIcons name="trash" size={28} color="red"onPress={handleDeleteMenu} />
+                        <EvilIcons name="trash" size={30} color="red"onPress={handleDeleteMenu} />
                     </TouchableOpacity>
                 </View>
 
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         width:width *0.13,
     },
     switch: {
-        transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+        transform: [{ scaleX: 0.65 }, { scaleY: 0.65 }],
       },
     vectorImange: {
         backgroundColor:"green",
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     },
     subText: {
         fontSize: 16,
-        fontWeight: "400",
+        fontWeight: "300",
         paddingLeft: 12
     },
     menuName: {
@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
     firstRow: {
         justifyContent: "space-between",
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        marginRight:14
     },
     secondRow: {
         justifyContent: "space-between",
