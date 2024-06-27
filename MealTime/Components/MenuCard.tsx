@@ -4,46 +4,11 @@ import { EvilIcons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { REACT_NATIVE_BASE_URL } from '@env';
+import { useNavigation } from '@react-navigation/native';
 
-const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuActivation, activeMenuId }) => {
-    const [isEnabled, setIsEnabled] = useState(data.id === activeMenuId);
-
-    useEffect(() => {
-      setIsEnabled(data.id === activeMenuId);
-    }, [activeMenuId, data.id]);
-  
-    const toggleSwitch = async () => {
-        setIsEnabled(previousState => !previousState); // Optimistically toggle UI state
+const MenuCard = ({ data,style, color,lightColor}) => {
+    const navigation = useNavigation();
       
-        const newActivationCode = !isEnabled; // Determine new activation code
-      
-        try {
-          const encodedMenuName = encodeURIComponent(data.menuName);
-          const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodedMenuName}&ActivationCode=${newActivationCode}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-      
-          if (!response.ok) {
-            throw new Error(`Failed to ${newActivationCode ? 'activate' : 'deactivate'} menu`);
-          }
-      
-          // Update local state and notify parent component
-          setIsEnabled(newActivationCode);
-          onMenuActivation(newActivationCode ? data.id : null); // Notify parent about activation/deactivation
-        } catch (error) {
-          console.error(`Error ${newActivationCode ? 'activating' : 'deactivating'} menu:`, error);
-          // Restore previous UI state on error
-          setIsEnabled(previousState => !previousState);
-        
-        }
-      };
-      
-      
-      
-  
     const handleDeleteMenu = async () => {
         try {
             const response = await fetch
@@ -57,6 +22,7 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
             if (response.ok) {
                 // Handle success scenario (e.g., remove menu from UI)
                 console.log(`Menu '${data.menuName}' deleted successfully.`);
+               setTimeout(()=> {},2000);
             } else {
                 console.error('Failed to delete menu:', response.status);
                 // Handle failure scenario if needed
@@ -66,6 +32,13 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
             // Handle error scenario if needed
         }
     };
+
+    useEffect(()=>
+        {
+            if(handleDeleteMenu){
+                //window.location.reload()
+            }
+        },[handleDeleteMenu])
 
 
     // const handleMenuActivation = async (activationCode) => {
@@ -120,10 +93,10 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuAct
                     <TouchableOpacity>
                         <Switch
                             trackColor={{ false: '#F1F1F1', true: '#035176' }}
-                            thumbColor={isEnabled ? '#fff' : '#035176'}
+                            thumbColor={data.menuActivated ? '#fff' : '#035176'}
                             ios_backgroundColor="#F1F1F1"
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
+                            onValueChange={()=>{}}
+                            value={data.menuActivated}
                             style={styles.switch}
                         />
                     </TouchableOpacity>

@@ -55,62 +55,6 @@ const AllMenuPage: React.FC = () => {
     fetchMenus(); // Call fetchMenus when component mounts
   }, []);
 
-  const handleMenuActivation = async (menuId: number | null) => {
-    try {
-      if (menuId === activeMenuId) {
-        // Menu is already active, deactivate it
-        await deactivateMenu(menuId);
-        setActiveMenuId(null); // Update active menu ID state
-      } else {
-        // Deactivate currently active menu if any
-        if (activeMenuId !== null) {
-          await deactivateMenu(activeMenuId);
-        }
-
-        // Activate the selected menu
-        await activateMenu(menuId);
-        setActiveMenuId(menuId); // Update active menu ID state
-      }
-    } catch (error) {
-      console.error('Error activating/deactivating menu:', error);
-      // Handle error scenario if needed
-      // Restore previous state if activation/deactivation fails
-      setActiveMenuId(activeMenuId);
-    }
-  };
-
-  const activateMenu = async (menuId: number) => {
-    try {
-      const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(menus.find(menu => menu.id === menuId)?.menuName)}&ActivationCode=true`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to activate menu');
-      }
-    } catch (error) {
-      throw new Error('Error activating menu');
-    }
-  };
-
-  const deactivateMenu = async (menuId: number) => {
-    try {
-      const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(menus.find(menu => menu.id === menuId)?.menuName)}&ActivationCode=false`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Failed to deactivate menu');
-      }
-    } catch (error) {
-      throw new Error('Error deactivating menu');
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.salutationBar}>
@@ -130,7 +74,8 @@ const AllMenuPage: React.FC = () => {
             </Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={styles.menuView} showsVerticalScrollIndicator={false}
+          <ScrollView contentContainerStyle={styles.menuView} 
+          showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
           
             {menus.map((menu) => (
@@ -138,13 +83,8 @@ const AllMenuPage: React.FC = () => {
                 key={menu.id}
                 data={menu}
                 color={getRandomColor(menu.id)}
-                lightColor={lightenHexColor(getRandomColor(menu.id), 80)}
-                onMenuActivation={handleMenuActivation} 
-                activeMenuId={activeMenuId}
-
-                checkedValue={undefined} 
-                style={undefined}
-                 onOpen={undefined}           
+                lightColor={lightenHexColor(getRandomColor(menu.id), 80)} 
+                style={undefined}          
                     />
             ))}
           </ScrollView>
@@ -152,7 +92,7 @@ const AllMenuPage: React.FC = () => {
         {showPopOver && (
           <BottomPopOver
             compHeight={24}
-            onConfirm={() => { /* Handle confirmation */ }}
+            onConfirm={() => {}}
             onCancel={() => setShowPopOver(false)}
           />
         )}
