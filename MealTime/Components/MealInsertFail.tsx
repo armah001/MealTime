@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusB
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from './CustomButton';
 
-const MealUpdateSucess = ({  }) => {
+const MealInsertFail = ({  }) => {
     const [keyboardOffset, setKeyboardOffset] = useState(new Animated.Value(0));
         useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
@@ -38,22 +38,22 @@ const MealUpdateSucess = ({  }) => {
                     <TouchableOpacity style={styles.closeIcon} >
                         <Image 
                             style={styles.uploadIcon}
-                            source={require('../assets/Group.png')} />
-                            <Text>Meal Updated Successfully</Text>
+                            source={require('../assets/GroupFail.png')} />
+                            <Text>Sorry, an error occurred while creating a new meal. Try again!!</Text>
                     </TouchableOpacity>
                 </View>
                 
                 <View style={styles.line} />
                
                 <View style={styles.buttonContainer}>
-                    <CustomButton buttonWidth={370} title='Close' />
+                    <CustomButton buttonWidth={370} title='Try Again' />
                 </View>
             </View>
         </Animated.View>
     );
 };
 
-export default MealUpdateSucess;
+export default MealInsertFail;
 
 const { width, height } = Dimensions.get('screen');
 

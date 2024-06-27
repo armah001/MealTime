@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusB
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from './CustomButton';
 
-const MealUpdateSucess = ({  }) => {
+const MealInsertSucess = ({  }) => {
     const [keyboardOffset, setKeyboardOffset] = useState(new Animated.Value(0));
         useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
@@ -39,7 +39,7 @@ const MealUpdateSucess = ({  }) => {
                         <Image 
                             style={styles.uploadIcon}
                             source={require('../assets/Group.png')} />
-                            <Text>Meal Updated Successfully</Text>
+                            <Text>New Meal Added Successfully</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -53,7 +53,7 @@ const MealUpdateSucess = ({  }) => {
     );
 };
 
-export default MealUpdateSucess;
+export default MealInsertSucess;
 
 const { width, height } = Dimensions.get('screen');
 
