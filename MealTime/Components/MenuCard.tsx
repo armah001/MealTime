@@ -1,14 +1,93 @@
 import { View, StyleSheet, Touchable, TouchableOpacity, Text, Image, Dimensions, Platform, Switch } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { REACT_NATIVE_BASE_URL } from '@env';
 
-const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor }) => {
-    const [isEnabled, setIsEnabled] = useState(false);
+const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor,onMenuActivation, activeMenuId }) => {
+    const [isEnabled, setIsEnabled] = useState(data.id === activeMenuId);
 
+    useEffect(() => {
+      setIsEnabled(data.id === activeMenuId);
+    }, [activeMenuId, data.id]);
+  
+    const toggleSwitch = async () => {
+      setIsEnabled(previousState => !previousState);
+      const activationCode = !isEnabled; // Toggle the activation status
+  
+      try {
+        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(data.menuName)}&ActivationCode=${activationCode}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Failed to ${activationCode ? 'activate' : 'deactivate'} menu`);
+        }
+  
+        // Update local state and notify parent component
+        setIsEnabled(activationCode);
+        onMenuActivation(activationCode ? data.id : null); // Notify parent about activation/deactivation
+      } catch (error) {
+        console.error(`Error ${activationCode ? 'activating' : 'deactivating'} menu:`, error);
+        // Restore previous state if activation/deactivation fails
+        setIsEnabled(previousState => !previousState);
+      }
+    };
+  
+    const handleDeleteMenu = async () => {
+        try {
+            const response = await fetch
+            (`${REACT_NATIVE_BASE_URL}/api/Menu/RemoveMenu?MenuName=${encodeURIComponent(data.menuName)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                // Handle success scenario (e.g., remove menu from UI)
+                console.log(`Menu '${data.menuName}' deleted successfully.`);
+            } else {
+                console.error('Failed to delete menu:', response.status);
+                // Handle failure scenario if needed
+            }
+        } catch (error) {
+            console.error('Error deleting menu:', error);
+            // Handle error scenario if needed
+        }
+    };
+
+
+    // const handleMenuActivation = async (activationCode) => {
+    //     try {
+    //         const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(data.menuName)}&ActivationCode=${activationCode}`, {
+    //             method: 'PUT', // Assuming activation/deactivation uses PUT method
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //         });
+
+    //         if (response.ok) {
+    //             // Handle success scenario (e.g., update UI state)
+    //             console.log(`Menu '${data.menuName}' ${activationCode ? 'activated' : 'deactivated'} successfully.`);
+    //         } else {
+    //             console.error('Failed to activate/deactivate menu:', response.status);
+    //             // Handle failure scenario if needed
+    //             // Restore previous state of switch if necessary
+    //             setIsEnabled(previousState => !previousState);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error activating/deactivating menu:', error);
+    //         // Handle error scenario if needed
+    //         // Restore previous state of switch if necessary
+    //         setIsEnabled(previousState => !previousState);
+    //     }
+    // };
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-    console.log("From the toggle switch", isEnabled)
     return (
 
         <View style={styles.container}>
@@ -18,13 +97,13 @@ const MenuCard = ({ data, checkedValue, style, onOpen,color,lightColor }) => {
                         <View style={[styles.imageView,{backgroundColor:lightColor}]}>
                         <SimpleLineIcons name="book-open" size={24} color={color} />
                         </View>
-                        <Text style={styles.menuName}>{data.title}</Text>
+                        <Text style={styles.menuName}>{data.menuName}</Text>
                     </View>
                 </TouchableOpacity>
 
                 <View>
                     <TouchableOpacity>
-                        <EvilIcons name="trash" size={30} color="red" />
+                        <EvilIcons name="trash" size={30} color="red"onPress={handleDeleteMenu} />
                     </TouchableOpacity>
                 </View>
 

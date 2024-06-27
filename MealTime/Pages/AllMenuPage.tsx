@@ -1,32 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, Image, BackHandler, ScrollView } from 'react-native';
-import CustomButton from '../Components/CustomButton';
-import TitleCard from '../Components/TitleCArd';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import BottomPopOver from '../Components/BottomPopOver';
 import { StackNavigationProp } from '@react-navigation/stack';
-import SalutationBar from '../Components/SalutationBar';
-import AdminHeroCard from '../Components/AdminHeroCard';
-import AdminMenu from '../Components/AdminMenu';
-import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../Components/AuthContext';
 import NavigationHeader from '../Components/NavigationHeader';
-import BottomPopOver from '../Components/BottomPopOver';
-import MenuCard from '../Components/MenuCard';
 import Loader from '../Components/Loader';
-import {getRandomColor, lightenHexColor} from '../Components/Utils/Misc'
+import MenuCard from '../Components/MenuCard';
+import { getRandomColor, lightenHexColor } from '../Components/Utils/Misc';
+import { REACT_NATIVE_BASE_URL } from '@env';
+import * as SecureStore from 'expo-secure-store';
+
 type RootStackParamList = {
   LogIn: any;
-  // Add other screen names here
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'LogIn'>;
 
 const AllMenuPage: React.FC = () => {
-  const { clearFields } = useContext(AuthContext);
+  const { clearFields } = React.useContext(AuthContext);
   const navigation = useNavigation<NavigationProp>();
   const [showPopOver, setShowPopOver] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any[]>([]);
+  const [menus, setMenus] = useState<any[]>([]);
+  const [activeMenuId, setActiveMenuId] = useState<number | null>(null); // State to track active menu ID
 
   const handleLogout = async () => {
     await SecureStore.deleteItemAsync("accessToken");
@@ -35,67 +32,84 @@ const AllMenuPage: React.FC = () => {
   };
 
   useEffect(() => {
-    // Mock fetching data
-    const fetchData = async () => {
+    // Function to fetch all menus from the API
+    const fetchMenus = async () => {
       setIsLoading(true);
-      // Simulate an API call
-      setTimeout(() => {
-        setData([
-          {
-            id: 0,
-            title: "Menu 1",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 1,
-            title: "Menu 2",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 2,
-            title: "Menu 5",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 3,
-            title: "Test",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 4,
-            title: "Trial",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 5,
-            title: "Something",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 6,
-            title: "Menu 5",
-            image: "",
-            link: "Menu1"
-          },
-          {
-            id: 7,
-            title: "Test",
-            image: "",
-            link: "Menu1"
-          }
-        ]);
+      try {
+        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/GetMenus`);
+        if (response.ok) {
+          const data = await response.json();
+          setMenus(data); // Set fetched menus to state
+        } else {
+          console.error('Failed to fetch menus:', response.status);
+          // Handle failure scenario if needed
+        }
+      } catch (error) {
+        console.error('Error fetching menus:', error);
+        // Handle error scenario if needed
+      } finally {
         setIsLoading(false);
-      }, 1000);
+      }
     };
 
-    fetchData();
+    fetchMenus(); // Call fetchMenus when component mounts
   }, []);
+
+  const handleMenuActivation = async (menuId: number | null) => {
+    try {
+      if (menuId === activeMenuId) {
+        // Menu is already active, deactivate it
+        await deactivateMenu(menuId);
+        setActiveMenuId(null); // Update active menu ID state
+      } else {
+        // Deactivate currently active menu if any
+        if (activeMenuId !== null) {
+          await deactivateMenu(activeMenuId);
+        }
+
+        // Activate the selected menu
+        await activateMenu(menuId);
+        setActiveMenuId(menuId); // Update active menu ID state
+      }
+    } catch (error) {
+      console.error('Error activating/deactivating menu:', error);
+      // Handle error scenario if needed
+      // Restore previous state if activation/deactivation fails
+      setActiveMenuId(activeMenuId);
+    }
+  };
+
+  const activateMenu = async (menuId: number) => {
+    try {
+      const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(menus.find(menu => menu.id === menuId)?.menuName)}&ActivationCode=true`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to activate menu');
+      }
+    } catch (error) {
+      throw new Error('Error activating menu');
+    }
+  };
+
+  const deactivateMenu = async (menuId: number) => {
+    try {
+      const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(menus.find(menu => menu.id === menuId)?.menuName)}&ActivationCode=false`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to deactivate menu');
+      }
+    } catch (error) {
+      throw new Error('Error deactivating menu');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -108,30 +122,37 @@ const AllMenuPage: React.FC = () => {
       </View>
       <View style={styles.line} />
       <View style={styles.body}>
-        {isLoading && <Loader loading/>}
-        {data.length === 0 && !isLoading ? (
+        {isLoading && <Loader loading />}
+        {menus.length === 0 && !isLoading ? (
           <View style={styles.bodyContent}>
-            <Image source={require('../assets/noMenu.png')} style={styles.cardImage} />
-            <View style={styles.imageText}>
-              <Text style={{ textAlign: "center" }}>
-                There are no menus, Click on "Add" to {'\n'} create a new menu.
-              </Text>
-            </View>
+            <Text style={{ textAlign: "center" }}>
+              There are no menus. Click on "Add" to create a new menu.
+            </Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={styles.menuView} 
+          <ScrollView contentContainerStyle={styles.menuView}>
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
-            {data.map((menu) => (
-              <MenuCard key={menu.id} checkedValue={menu} data={menu} style={undefined} onOpen={undefined} color={getRandomColor(menu.id)} lightColor={lightenHexColor(getRandomColor(menu.id),80)}/>
-              //<Text>Hello</Text>
+            {menus.map((menu) => (
+              <MenuCard
+                key={menu.id}
+                data={menu}
+                color={getRandomColor(menu.id)}
+                lightColor={lightenHexColor(getRandomColor(menu.id), 80)}
+                onMenuActivation={handleMenuActivation} 
+                activeMenuId={activeMenuId}
+
+                checkedValue={undefined} 
+                style={undefined}
+                 onOpen={undefined}           
+                    />
             ))}
           </ScrollView>
         )}
         {showPopOver && (
           <BottomPopOver
             compHeight={24}
-            onConfirm={() => { }}
+            onConfirm={() => { /* Handle confirmation */ }}
             onCancel={() => setShowPopOver(false)}
           />
         )}
@@ -145,34 +166,19 @@ export default AllMenuPage;
 const { width, height } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
     flex: 1,
     alignItems: 'center',
     justifyContent: "flex-start",
-    margin: 0,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingTop: 40,
   },
-  menuView: {
-    padding: 20,
-    alignItems: 'center',
-    width: width * 0.92,
+  salutationBar: {
+    height: 60,
   },
   line: {
     width: '100%',
     height: 1,
     backgroundColor: 'rgba(217,217,217,1)',
-  },
-  cardImage: {
-    width: width * 0.95,
-    height: height * 0.4,
-    resizeMode: 'contain',
-  },
-  imageText: {
-    width: width,
-    height: height * 0.04,
-  },
-  salutationBar: {
-    height: 60,
   },
   body: {
     alignItems: "center",
@@ -183,5 +189,10 @@ const styles = StyleSheet.create({
   bodyContent: {
     marginBottom: 180,
     alignItems: 'center',
+  },
+  menuView: {
+    padding: 20,
+    alignItems: 'center',
+    width: width * 0.92,
   },
 });
