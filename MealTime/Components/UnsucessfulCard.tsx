@@ -7,6 +7,8 @@ import CustomButton from './CustomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import TransparentButton from './TransparentButton';
+import { REACT_NATIVE_BASE_URL } from '@env';
+import * as SecureStore from 'expo-secure-store';
 
 type RootStackParamList = {
     HomePage: any
@@ -15,9 +17,50 @@ type RootStackParamList = {
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomePage'>;
 
-const FailCard = ({onRetry}) => {  
+const HandleRetrySubmission = async (selectedMeals: (string | null)[]) => {
+    const payload = {
+        mealNames: selectedMeals.filter(meal => meal !== null),
+    
+    };
+
+    try {
+        const token = await SecureStore.getItemAsync("accessToken"); 
+
+        if (!token) {
+            throw new Error('No token found');
+        }
+
+        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/User/SelectMealBulk`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            console.log('Successfully submitted meal selections:', response.status);
+            const data = await response.json();
+            return data; // You can handle the response data as needed
+        } else {
+            console.log('Failed to submit meal selections:', response.status);
+            // Handle failure scenario here if needed
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error scenario here if needed
+    }
+};
+
+const FailCard = ({}) => {  
 
     const navigation = useNavigation<NavigationProp>();
+
+    const onRetry = async (selectedMeals) => {
+        await HandleRetrySubmission(selectedMeals);
+        console.log(selectedMeals);
+    };
 
     return (
         <View style={styles.container}>
