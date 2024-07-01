@@ -6,7 +6,7 @@ import { SimpleLineIcons } from '@expo/vector-icons';
 import { REACT_NATIVE_BASE_URL } from '@env';
 import { useNavigation } from '@react-navigation/native';
 
-const MenuCard = ({ data,style, color,lightColor}) => {
+const MenuCard = ({ data,style, color,lightColor, onMenuActivate}) => {
     const navigation = useNavigation();
       
     const handleDeleteMenu = async () => {
@@ -33,40 +33,42 @@ const MenuCard = ({ data,style, color,lightColor}) => {
         }
     };
 
+      const handleToggleMenu = async (newValue) => {
+        onMenuActivate(data.id);
+        console.log("this id the menu ",data.id);
+        try {
+            const activationCode = newValue ? true : false;
+
+            const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuID=${encodeURIComponent(data.MenuID)}&ActivationCode=${activationCode}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            
+            
+            if (response.ok) {
+                // Handle success scenario (e.g., update UI state)
+                console.log(`Menu '${data.menuName}' toggled successfully.`);
+                // Assuming you have a callback to update UI state after API call
+                onMenuActivate(data.id);
+            } else {
+                console.error('Failed to toggle menu:', response.status);
+                // Handle failure scenario if needed
+            }
+        } catch (error) {
+            console.error('Error toggling menu:', error);
+            // Handle error scenario if needed
+        }
+    };
+    
     useEffect(()=>
         {
             if(handleDeleteMenu){
                 //window.location.reload()
             }
         },[handleDeleteMenu])
-
-
-    // const handleMenuActivation = async (activationCode) => {
-    //     try {
-    //         const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/ActivateMenu?MenuName=${encodeURIComponent(data.menuName)}&ActivationCode=${activationCode}`, {
-    //             method: 'PUT', // Assuming activation/deactivation uses PUT method
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-
-    //         if (response.ok) {
-    //             // Handle success scenario (e.g., update UI state)
-    //             console.log(`Menu '${data.menuName}' ${activationCode ? 'activated' : 'deactivated'} successfully.`);
-    //         } else {
-    //             console.error('Failed to activate/deactivate menu:', response.status);
-    //             // Handle failure scenario if needed
-    //             // Restore previous state of switch if necessary
-    //             setIsEnabled(previousState => !previousState);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error activating/deactivating menu:', error);
-    //         // Handle error scenario if needed
-    //         // Restore previous state of switch if necessary
-    //         setIsEnabled(previousState => !previousState);
-    //     }
-    // };
-    //const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  
     return (
 
         <View style={styles.container}>
@@ -95,7 +97,7 @@ const MenuCard = ({ data,style, color,lightColor}) => {
                             trackColor={{ false: '#F1F1F1', true: '#035176' }}
                             thumbColor={data.menuActivated ? '#fff' : '#035176'}
                             ios_backgroundColor="#F1F1F1"
-                            onValueChange={()=>{}}
+                            onValueChange={(newValue) => handleToggleMenu(newValue)}
                             value={data.menuActivated}
                             style={styles.switch}
                         />

@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ConfirmModal from './ConfirmModal';
 import SuccessCard from './SucessCard';
+import { REACT_NATIVE_BASE_URL } from '@env';
 
 
 
@@ -31,6 +32,36 @@ const SelectionTab = (props: SelectionTabProps) => {
     const navigation = useNavigation<NavigationProp>();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessCard, setShowSuccessCard] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const fetchMeals = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Meal/GetActiveMeals`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+             
+            });
+      
+            if (response.ok) {
+              console.log('Successfully fetched meals:', response.status);
+              const data = await response.json();
+              console.log(data);
+              
+            } else {
+              console.log('Failed :', response.status);
+              // Handle failure scenario here if needed
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            // Handle error scenario here if needed
+          }
+         finally {
+            setIsLoading(false);
+          }
+        }
 
     const data =[
         {

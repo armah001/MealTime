@@ -39,7 +39,13 @@ const AllMenuPage: React.FC = () => {
         const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/GetMenus`);
         if (response.ok) {
           const data = await response.json();
-          setMenus(data); // Set fetched menus to state
+          //setMenus(data); // Set fetched menus to state
+
+          setMenus(data.map(menu => ({
+            ...menu,
+            menuActivated: menu.id === activeMenuId // Initialize menuActivated based on activeMenuId
+          })));
+
         } else {
           console.error('Failed to fetch menus:', response.status);
           // Handle failure scenario if needed
@@ -51,9 +57,24 @@ const AllMenuPage: React.FC = () => {
         setIsLoading(false);
       }
     };
-
+    
     fetchMenus(); // Call fetchMenus when component mounts
-  }, []);
+  }, [activeMenuId]);
+
+  const handleMenuActivation = (menuId: number) => {
+    if (activeMenuId === menuId) {
+      // Menu already active, do nothing
+      return;
+    }
+    // Deactivate previously activated menu
+    const updatedMenus = menus.map(menu => ({
+      ...menu,
+      menuActivated: menu.id === menuId
+    }));
+
+    setMenus(updatedMenus);
+    setActiveMenuId(menuId);
+  };
 
   return (
     <View style={styles.container}>
@@ -84,7 +105,8 @@ const AllMenuPage: React.FC = () => {
                 data={menu}
                 color={getRandomColor(menu.id)}
                 lightColor={lightenHexColor(getRandomColor(menu.id), 80)} 
-                style={undefined}          
+                style={undefined}     
+                onMenuActivate={handleMenuActivation}     
                     />
             ))}
           </ScrollView>
