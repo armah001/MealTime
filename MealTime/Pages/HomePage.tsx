@@ -19,6 +19,8 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage', 'LogI
 export default function HomePage() {
     const navigation = useNavigation<NavigationProp>();
     const [showSuccessCard, setShowSuccessCard] = useState(false);
+    const [showFailCard, setShowFailCard] = useState(false);
+
     const { clearFields } = useContext(AuthContext);
 
 
@@ -27,6 +29,11 @@ export default function HomePage() {
     clearFields();
     navigation.navigate('LogIn');
   };
+
+
+const handleRetry = () => {
+    setShowFailCard(false);
+};
 
   return (
     <View style={styles.container}>

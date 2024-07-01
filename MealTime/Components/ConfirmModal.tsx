@@ -1,7 +1,51 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusBar } from 'react-native';
+import { REACT_NATIVE_BASE_URL } from '@env';
+import * as SecureStore from 'expo-secure-store';
 
-const ConfirmModal = ({ onConfirm, onCancel }) => {
+
+const submitMealSelections = async (selectedMeals: (string | null)[]) => {
+    const payload = {
+        mealNames: selectedMeals.filter(meal => meal !== null),
+    
+    };
+
+    try {
+        const token = await SecureStore.getItemAsync("accessToken"); 
+
+        if (!token) {
+            throw new Error('No token found');
+        }
+
+        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/User/SelectMealBulk`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            console.log('Successfully submitted meal selections:', response.status);
+            const data = await response.json();
+            return data; // You can handle the response data as needed
+        } else {
+            console.log('Failed to submit meal selections:', response.status);
+            // Handle failure scenario here if needed
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle error scenario here if needed
+    }
+};
+
+    const ConfirmModal = ({ onConfirm, onCancel, selectedMeals }) => {
+        const handleConfirm = async () => {
+            await submitMealSelections(selectedMeals);
+            console.log(selectedMeals);
+            onConfirm();
+        };
 
     return (
         <View style={styles.mainContainer}>
@@ -14,7 +58,7 @@ const ConfirmModal = ({ onConfirm, onCancel }) => {
                 <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
                     <Text style={styles.cancelButtonText}>Cancel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
+                <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
                     <Text style={styles.confirmButtonText}>Confirm</Text>
                 </TouchableOpacity>
             </View>
@@ -25,7 +69,6 @@ const ConfirmModal = ({ onConfirm, onCancel }) => {
 
 export default ConfirmModal;
 
-// ... rest of your code
 
 const {width, height} = Dimensions.get('screen');
 

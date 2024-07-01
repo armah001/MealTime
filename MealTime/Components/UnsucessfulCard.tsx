@@ -15,7 +15,7 @@ type RootStackParamList = {
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomePage'>;
 
-const FailCard : React.FC = () => {  
+const FailCard = ({onRetry}) => {  
 
     const navigation = useNavigation<NavigationProp>();
 
@@ -29,7 +29,7 @@ const FailCard : React.FC = () => {
             <Text style={styles.text}>The meals you have chosen for the week was not recorded sucessfuly!!!</Text>
             <View style={styles.button}>
             <View style={{ marginBottom: 10 }}>
-                <CustomButton buttonWidth={355} title="Try Again" onPress={() => {}}  />       
+                <CustomButton buttonWidth={355} title="Try Again" onPress={onRetry}  />       
                 </View> 
                 <CustomButton 
                 buttonWidth={355} 
