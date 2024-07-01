@@ -1,22 +1,39 @@
-
 import React from 'react';
 import { StyleSheet,View, Text, TouchableOpacity } from 'react-native';
 import CustomButton from './CustomButton';
 import { AntDesign } from '@expo/vector-icons';
 
-const DateWidget = () => {
-    return (
+type DateWidgetProps = {
+  currentDay: string;
+  onDayChange: (day: string) => void;
+};
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+const DateWidget: React.FC<DateWidgetProps> = ({ currentDay, onDayChange }) => {
+  const currentIndex = daysOfWeek.indexOf(currentDay);
+
+  const handlePrevDay = () => {
+    const prevDay = daysOfWeek[(currentIndex - 1 + daysOfWeek.length) % daysOfWeek.length];
+    onDayChange(prevDay);
+  };
+
+  const handleNextDay = () => {
+      const nextDay = daysOfWeek[(currentIndex + 1) % daysOfWeek.length];
+      onDayChange(nextDay);
+  };
+
+  return (
         <View style={styles.container}>
             <View style={styles.DaysBox}>
-                <Text style={styles.text} >Monday</Text>
+                <Text style={styles.text} >{currentDay}</Text>
                 <View style={styles.arrowIcons}>
                 <View style={styles.arrowIcon}>
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableOpacity onPress={handlePrevDay}>
         <AntDesign name="arrowleft" size={24} />
       </TouchableOpacity>
     </View>
     <View  >
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableOpacity onPress={handleNextDay}>
         <AntDesign name="arrowright"  size={24}/>
       </TouchableOpacity>
     </View>

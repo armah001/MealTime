@@ -1,12 +1,11 @@
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { StyleSheet,View, Text, TouchableOpacity, Modal } from 'react-native';
 import CustomButton from './CustomButton';
 import { AntDesign } from '@expo/vector-icons';
 import DateWidget from './DateWidget';
 import Radio from './Radio';
-
-
+import { Meal } from './Interface/Meal';
 // remove later
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -28,11 +27,22 @@ type RootStackParamList = {
   type NavigationProp = StackNavigationProp<RootStackParamList, 'SuccessCard'>;
 
 const SelectionTab = (props: SelectionTabProps) => {
-    const[meal,setMeal]=useState("Rice");
+    const [meals, setMeals] = useState<Meal[]>([]);
+    const [meal, setMeal] = useState<string | null>(null);
+    // const [currentDay, setCurrentDay] = useState<string>('Monday');
+
+
     const navigation = useNavigation<NavigationProp>();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessCard, setShowSuccessCard] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
+    const [currentDayIndex, setCurrentDayIndex] = useState<number>(0);
+    const dayOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+    const [selectedMeal, setSelectedMeal] = useState<string | null>(null); // State to hold selected meal
+    const [selectedDay, setSelectedDay] = useState<string>('Monday'); 
+    const [selectionsHistory, setSelectionsHistory] = useState<Array<(string | null)[]>>([[], [], [], [], []]); // Array to store selections for each day
 
     const fetchMeals = async () => {
         setIsLoading(true);
@@ -47,9 +57,9 @@ const SelectionTab = (props: SelectionTabProps) => {
       
             if (response.ok) {
               console.log('Successfully fetched meals:', response.status);
-              const data = await response.json();
-              console.log(data);
-              
+              const data: Meal[] = await response.json();
+              setMeals(data);   
+              filterMealsByDay(data, dayOfWeek[currentDayIndex]);
             } else {
               console.log('Failed :', response.status);
               // Handle failure scenario here if needed
@@ -63,48 +73,43 @@ const SelectionTab = (props: SelectionTabProps) => {
           }
         }
 
-    const data =[
-        {
-            id:0,
-            lable:"Jollof Rice with Chicken, Coleslaw, and Soda",
-            value:"Jollof",
-            image:"https://cdn.jwplayer.com/v2/media/BRU94itM/poster.jpg?width=720"
-        },
-        {
-            id:1,
-            lable:"Fried Rice with Fish, Mixed Vegetables, and Juice",
-            value:"Gari",
-            image:"https://www.kitchensanctuary.com/wp-content/uploads/2020/04/Chicken-Fried-Rice-square-FS-.jpg"
-        },
-        {
-            id:2,
-            lable:"Spaghetti Bolognese with Garlic Bread and Lemonade",
-            value:"Rice",
-            image:"https://www.slimmingeats.com/blog/wp-content/uploads/2010/04/spaghetti-bolognese-36.jpg"
-        },
-        {
-            id:3,
-            lable:"Grilled Chicken with Mashed Potatoes, Gravy, and Iced Tea",
-            value:"Khebab",
-            image:"https://marleyspoon.com/media/recipes/44803/main_photos/large/pan_roasted_chicken_mashed_potatoes-d256922d8203656d85eb9fa0b473ea75.jpeg"
-        },
-        {
-            id:4,
-            lable:"Vegetable Stir-Fry with Tofu, Steamed Rice, and Green Tea",
-            value:"pizza",
-            image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDaVcll19kN9w5p2AKqn33CtJYOzzUQiWb0A&s"
-        }
+        const filterMealsByDay = (meals: Meal[], day: string) => {
+            const filtered = meals.filter(meal => meal.daysSelection.includes(day));
+            setFilteredMeals(filtered);
+        };
+    
+        const handleDayChange = (day: string) => {
+            setSelectedDay(day);
+            const index = dayOfWeek.findIndex(d => d === day);
+            setCurrentDayIndex(index);
+            filterMealsByDay(meals, day);
+                setSelectedMeal(selectionsHistory[currentDayIndex][0] || null);
 
-    ]
+        };
+
+        const handleNextDay = () => {
+            const nextIndex = (currentDayIndex + 1) % dayOfWeek.length;
+            setCurrentDayIndex(nextIndex);
+            filterMealsByDay(meals, dayOfWeek[nextIndex]);
+        
+            if (dayOfWeek[nextIndex] === 'Monday') {
+              setShowConfirmModal(true);
+            }
+          };
+
+        useEffect(() => {
+            fetchMeals();
+          }, []);
 
     return (
         <View style={styles.container}>
-                <DateWidget/>
+                <DateWidget currentDay={dayOfWeek[currentDayIndex]} onDayChange={handleDayChange} />
+
                 <View style={styles.radioSelection}>
-                    <Radio data={data} checkedValue={meal} onChange={setMeal} style={{marginBottom:15,fontSize:30}}/>
+                    <Radio data={filteredMeals} checkedValue={meal} onChange={setMeal} style={{marginBottom:15,fontSize:30}}/>
                 </View>
             <View style={styles.button}>
-            <CustomButton title='Next' buttonWidth={355} onPress={() => setShowConfirmModal(true)}/>
+            <CustomButton title='Next' buttonWidth={355} onPress={handleNextDay}/>
             </View>
             <Modal
                 animationType="slide"

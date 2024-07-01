@@ -6,13 +6,13 @@ const Radio=({data,checkedValue,onChange,style})=>{
     return (
         <View style={[styles.container,style]}>
            {data.map((meal)=>{
-            let active=checkedValue==meal.value;
+            let active=checkedValue==meal.mealName;
             return (
             <TouchableOpacity 
             onPress={()=>{
-                onChange(meal.value)
+                onChange(meal.mealName)
                }}
-               key={meal.id}
+               key={meal.Id}
                >
                 <View style={styles.radioView}>
                 <View style={{marginTop:18, width:23}}>
@@ -23,13 +23,14 @@ const Radio=({data,checkedValue,onChange,style})=>{
                 </View>
                 <View style={styles.mealNameImage}>
                 <View style={styles.backgroundImage}>
-                    <ImageBackground source={{uri: meal.image}} style={styles.cardImage} >
+                    <ImageBackground source={{uri: meal.MealImage}} style={styles.cardImage}
+                      >
                   
                     </ImageBackground>
                     </View>
                    
                 <Text style={styles.text}>
-                    {meal.lable}
+                    {meal.mealName}
                 </Text>
                 </View>
                    
