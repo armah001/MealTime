@@ -3,10 +3,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 const Radio=({data,checkedValue,onChange,style})=>{
+
     return (
         <View style={[styles.container,style]}>
            {data.map((meal)=>{
             let active=checkedValue==meal.mealName;
+            const imageUrl = meal.mealImage; 
             return (
             <TouchableOpacity 
             onPress={()=>{
@@ -23,8 +25,7 @@ const Radio=({data,checkedValue,onChange,style})=>{
                 </View>
                 <View style={styles.mealNameImage}>
                 <View style={styles.backgroundImage}>
-                    <ImageBackground source={{uri: meal.MealImage}} style={styles.cardImage}
-                      >
+                    <ImageBackground source={{uri: imageUrl}} style={styles.cardImage}>
                   
                     </ImageBackground>
                     </View>
