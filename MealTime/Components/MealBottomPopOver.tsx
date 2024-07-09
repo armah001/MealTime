@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, StatusBar, TextInput, Keyboard, Animated, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform, TextInput, Keyboard, Animated, Image, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'; 
 import CustomButton from './CustomButton';
 import { REACT_NATIVE_BASE_URL } from '@env';
 
-const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
-    const [mealName, setMealName] = useState('');
-    const [mealImage, setMealImage] = useState(''); 
+interface MealBottomPopOverProps {
+    onConfirm: () => Promise<void>;
+    onCancel: () => void;
+    compHeight: number;
+    initialMealName: string; // Define initialMealName as string
+    initialMealImage: string; // Define initialMealImage as string
+}
+
+const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCancel, compHeight, initialMealName, initialMealImage }) => {
+    const [mealName, setMealName] = useState(initialMealName); // Initialize with initialMealName
+    const [mealImage, setMealImage] = useState(initialMealImage); // Initialize with initialMealImage
     const [keyboardOffset, setKeyboardOffset] = useState(new Animated.Value(0));
 
-    const handleMealChange = (text) => {
+    const handleMealChange = (text: string) => {
         setMealName(text);
     };
 
@@ -20,17 +28,18 @@ const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
 
             if (!permissionResult.granted) {
                 Alert.alert('Permission Denied', 'You need to grant permission to access photos.');
-                
                 return;
             }
+
             const pickerResult = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 quality: 1,
-                allowsMultipleSelection: false, // Allow multiple image selection
+                allowsMultipleSelection: false,
             });
+
             if (!pickerResult.canceled) {
-                setMealImage(pickerResult.assets[0].uri); // Update state with selected image URIs
+                setMealImage(pickerResult.assets[0].uri); // Update state with selected image URI
             }
         } catch (error) {
             console.error('Error picking images', error);
@@ -40,13 +49,14 @@ const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
+        
         return () => {
             keyboardDidShowListener.remove();
             keyboardDidHideListener.remove();
         };
     }, []);
 
-    const keyboardDidShow = (event) => {
+    const keyboardDidShow = (event: any) => {
         Animated.timing(keyboardOffset, {
             duration: 50,
             toValue: -event.endCoordinates.height,
@@ -71,8 +81,7 @@ const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
                 },
                 body: JSON.stringify({
                     newMeal: mealName,
-                    mealImage: mealImage
-                    
+                    mealImage: mealImage,
                 }),
             });
 
@@ -93,18 +102,18 @@ const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
         <Animated.View style={[styles.mainContainer, { transform: [{ translateY: keyboardOffset }] }]}>
             <View style={styles.container}>
                 <View style={styles.cardHeader}>
-                    <Text style={styles.title}>New Meal</Text>
+                    <Text style={styles.title}>Edit Meal</Text>
                     <TouchableOpacity style={styles.closeIcon} onPress={onCancel}>
                         <MaterialCommunityIcons name="window-close" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.line} />
                 <View style={styles.inputSection}>
-                    <Text style={styles.text}>Meal Images</Text>
+                    <Text style={styles.text}>Meal Image</Text>
                     <TouchableOpacity style={styles.imageUploadSection} onPress={handleImageUpload}>
                         {mealImage ? (
                             <Image source={{ uri: mealImage }} style={styles.uploadedIcon} />
-                                ) : (
+                        ) : (
                             <Image style={styles.uploadIcon} source={require('../assets/addmeal.png')} />
                         )}
                     </TouchableOpacity>
@@ -117,7 +126,7 @@ const MealBottomPopOver = ({ onConfirm, onCancel, compHeight }) => {
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton buttonWidth={370} title='Add New Meal'  onPress={handleConfirm}/>
+                    <CustomButton buttonWidth={370} title='Save Changes' onPress={handleConfirm}/>
                 </View>
             </View>
         </Animated.View>
@@ -189,30 +198,9 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 110
     },
-    cancelButton: {
-        borderColor: '#000033',
-        borderWidth: 1,
-        borderRadius: 5,
-        padding: 10,
-        width: '45%',
-        alignItems: 'center',
-    },
-    cancelButtonText: {
-        color: '#000033',
-    },
     closeIcon: {
         paddingBottom: 16,
         fontWeight: 'bold',
-    },
-    confirmButton: {
-        backgroundColor: '#000033',
-        borderRadius: 5,
-        padding: 10,
-        width: '45%',
-        alignItems: 'center',
-    },
-    confirmButtonText: {
-        color: 'white',
     },
     line: {
         width: '100%',

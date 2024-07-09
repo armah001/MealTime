@@ -16,6 +16,7 @@ import { REACT_NATIVE_BASE_URL } from '@env';
 import MealCard from '../Components/MealCard';
 import { getRandomColor, lightenHexColor } from '../Components/Utils/Misc';
 import Loader from '../Components/Loader';
+import EditMealBottomPopOver from '../Components/EditMealBottomPopOver';
 
 
 type RootStackParamList = {
@@ -97,13 +98,17 @@ const AllMealPage: React.FC = () => {
           lightColor={lightenHexColor(getRandomColor(meal.id), 80)}
           style={undefined}  
           
+         
+
           />
         ))}
 
         </ScrollView>
         )}
          {showPopOver && (
-        <MealBottomPopOver compHeight={20} onConfirm={()=>{}} onCancel={() => setShowPopOver(false)} />
+        <MealBottomPopOver compHeight={20} onCancel={() => setShowPopOver(false)} initialMealName={''} initialMealImage={''} onConfirm={function (): Promise<void> {
+              throw new Error('Function not implemented.');
+            } } />
       )}
            </View>
          

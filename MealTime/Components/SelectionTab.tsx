@@ -47,7 +47,6 @@ const SelectionTab = (props: SelectionTabProps) => {
       if (response.ok) {
         console.log('Successfully fetched meals:', response.status);
         const data: Meal[] = await response.json();
-        
         setMeals(data);
         filterMealsByDay(data, dayOfWeek[currentDayIndex]);
       } else {
@@ -63,6 +62,7 @@ const SelectionTab = (props: SelectionTabProps) => {
   };
 
   const filterMealsByDay = (meals: Meal[], day: string) => {
+    
     const filtered = meals.filter(meal => meal.daysSelection.includes(day));
     setFilteredMeals(filtered);
   };
