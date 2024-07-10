@@ -20,22 +20,20 @@ const Radio=({data,checkedValue,onChange,style})=>{
                 <View style={{marginTop:18, width:23}}>
                 <MaterialIcons 
                     name={active ? 'radio-button-checked' : 'radio-button-unchecked'} 
-                        size={24} 
+                        size={24} style={styles.radio}
 />
                 </View>
-                <View style={styles.mealNameImage}>
                 <View style={styles.backgroundImage}>
                     <ImageBackground source={{uri: imageUrl}} style={styles.cardImage}>
                   
                     </ImageBackground>
                     </View>
-                   
-                <Text style={styles.text}>
+
+                <Text style={active ? styles.activeText : styles.text}>
                     {meal.mealName}
                 </Text>
                 </View>
                    
-                </View>
                 
             </TouchableOpacity>)
            })} 
@@ -54,37 +52,55 @@ const styles=StyleSheet.create({
         width:"90%",
     },
     radio:{
-
+        color:"#254E65"
     },
     text:{
-        fontSize:16,
+        fontSize:14,
         fontWeight:400,
-        width:"100%",
+        width:"75%",
+        marginTop:15,
         paddingTop:10,
-        textAlign:"left"
+        textAlign:"left",
+        marginRight:8,
+        alignItems: "center",
+       // backgroundColor:"red"
+
+    },
+    activeText:{
+        fontSize:14,
+        fontWeight:"500",
+        width:"75%",
+        marginTop:15,
+        paddingTop:10,
+        textAlign:"left",
+        marginRight:8,
+        alignItems: "center",
     },
     radioView:{
         alignContent:"center",
-        justifyContent:"space-between",
+        justifyContent:"center",
         flexDirection:"row",
         width:"100%",
         height:80,
         marginBottom:10,
-        paddingLeft:25,
+        paddingLeft:10,
+        //backgroundColor:"red",
     },
     backgroundImage:{
-        width:40,
+        width:70,
         height:40,
+        paddingTop:10,
+        paddingLeft:8,
         //backgroundColor:"rgba(0,0.5,0.4,0.2)"
     },
     cardImage: {
-        width: width * 0.12,
-        height: height * 0.05,
+        width: width * 0.13,
+        height: height * 0.06,
         resizeMode: 'center',
         borderRadius: 10, 
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"red"
+        backgroundColor:"rgba(0,0.5,0.4,0.2)"
     },
 })

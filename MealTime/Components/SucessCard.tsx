@@ -9,10 +9,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
     SuccessCard: any;
+    AllMealSelectionPage:any;
+    HomePage:any;
     // Add other screen names here
   };
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'SuccessCard'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'AllMealSelectionPage'>;
 
 const SuccessCard : React.FC = () => {  
 
@@ -27,7 +29,7 @@ const SuccessCard : React.FC = () => {
             <Text style={styles.text1}>Successful</Text>
             <Text style={styles.text}>The meals you have chosen for the week has sucessfuly been recorded!!!</Text>
             <View style={styles.button}>
-                <CustomButton buttonWidth={355} title="View meals for the week" onPress={() => {}} />       
+                <CustomButton buttonWidth={355} title="View meals for the week" onPress={()=>navigation.navigate('AllMealSelectionPage')} />       
             </View>
            
         </View>

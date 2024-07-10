@@ -15,6 +15,7 @@ import FailCard from './Components/UnsucessfulCard';
 import AllMenuPage from './Pages/AllMenuPage';
 import AllMealPage from './Pages/AllMealPage';
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
         <Stack.Screen name = "AdminPage" component ={AdminPage}/>
         <Stack.Screen name = "SuccessCard" component = {SuccessCard}/>
         <Stack.Screen name = "UnsuccesfulCard" component = {FailCard}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

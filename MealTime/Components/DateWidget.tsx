@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
         fontSize:25,
         fontWeight:600,
         paddingLeft:20
-
         },
         arrowIcons:{
             flex:1,
