@@ -7,6 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext} from '../Components/AuthContext';
+import UserSelectionPopOver from '../Components/UserSelectionPopOver';
 
 type RootStackParamList = {
   AdminPage: any;
@@ -16,7 +17,7 @@ type RootStackParamList = {
       
 type NavigationProp = StackNavigationProp<RootStackParamList, 'AdminPage', 'LogIn'>;
 
-export default function HomePage() {
+export default function AllMealSelectionPage() {
     const navigation = useNavigation<NavigationProp>();
     const [showSuccessCard, setShowSuccessCard] = useState(false);
     const [showFailCard, setShowFailCard] = useState(false);
@@ -43,31 +44,19 @@ const handleRetry = () => {
       >
         <View style={styles.content}>
           <View style={styles.salutation}>
-            <Text style={styles.text}>Hi, Eric</Text>
+            <Text style={styles.text}>Hi, Eric!</Text>
             <View>
-            </View>   
-            <View style={styles.settingsIcon}>
-              <TouchableOpacity onPress={()=>navigation.navigate('AdminPage')}>
-                <MaterialIcons name="admin-panel-settings" size={24} color="white" />
-              </TouchableOpacity>
-              </View>
+            </View> 
             <View style={styles.logOutIcon}>
               <TouchableOpacity onPress={handleLogout}>
                 <MaterialIcons name="logout" size={24} color="white" />
               </TouchableOpacity>
             </View>
           </View>
-
-                   {!showSuccessCard && (
-            <View style={styles.HeroBox}>
-              <Text style={styles.HeroText}>Choose Your Meals For The Week</Text>
-            </View>
-          )}
         </View>
       </ImageBackground>
-
       <View style={styles.SelectionTab}>
-        {showSuccessCard ? <SuccessCard /> : <SelectionTab onConfirm={() => setShowSuccessCard(true)} />}
+        {showSuccessCard ? <SuccessCard /> : <UserSelectionPopOver onConfirm={() => setShowSuccessCard(true)} />}
       </View>
     </View>
     
@@ -85,7 +74,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     paddingTop:40,
-    flex: 0.3,
+    flex: 0.2,
     width: "100%",
     resizeMode: 'cover',
     justifyContent: 'center',

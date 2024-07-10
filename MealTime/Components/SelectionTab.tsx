@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Modal } from 'react-native';
+import { StyleSheet, View, Modal, ScrollView,Text } from 'react-native';
 import CustomButton from './CustomButton';
 import DateWidget from './DateWidget';
 import Radio from './Radio';
@@ -9,9 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ConfirmModal from './ConfirmModal';
 import { REACT_NATIVE_BASE_URL } from '@env';
-
+import Loader from '../Components/Loader';
 type RootStackParamList = {
   SuccessCard: any;
+  FailCard:any
   // Add other screen names here
 };
 
@@ -46,8 +47,8 @@ const SelectionTab = (props: SelectionTabProps) => {
 
       if (response.ok) {
         console.log('Successfully fetched meals:', response.status);
+
         const data: Meal[] = await response.json();
-        
         setMeals(data);
         filterMealsByDay(data, dayOfWeek[currentDayIndex]);
       } else {
@@ -66,7 +67,7 @@ const SelectionTab = (props: SelectionTabProps) => {
     const filtered = meals.filter(meal => meal.daysSelection.includes(day));
     setFilteredMeals(filtered);
   };
-
+  
   const handleDayChange = (day: string) => {
     const index = dayOfWeek.findIndex(d => d === day);
     setCurrentDayIndex(index);
@@ -104,12 +105,25 @@ const SelectionTab = (props: SelectionTabProps) => {
       <DateWidget currentDay={dayOfWeek[currentDayIndex]} onDayChange={handleDayChange} />
 
       <View style={styles.radioSelection}>
+      {isLoading && <Loader loading />}
+      {filteredMeals.length === 0 && !isLoading ? (
+          <View style={styles.bodyContent}>
+            <Text style={{ textAlign: "center" }}>
+              Menu has not been uploaded yet
+            </Text>
+          </View>
+        ) : (
+        <ScrollView 
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
         <Radio
           data={filteredMeals}
           checkedValue={selectedMeals[currentDayIndex]}
           onChange={handleMealChange}
           style={{ marginBottom: 15, fontSize: 30 }}
         />
+        </ScrollView>
+        )}
       </View>
       <View style={styles.button}>
         <CustomButton title='Next' buttonWidth={355} onPress={handleNextDay} />
@@ -123,15 +137,6 @@ const SelectionTab = (props: SelectionTabProps) => {
         }}
       >
         <View style={styles.overlay}>
-          {/* <ConfirmModal
-            onConfirm={() => {
-              setShowConfirmModal(false);
-              props.onConfirm();
-            }}
-            onCancel={() => {
-              setShowConfirmModal(false);
-            }}
-          /> */}
           <ConfirmModal 
                 onConfirm={() => {
                     setShowConfirmModal(false);
@@ -200,5 +205,9 @@ const styles = StyleSheet.create({
   arrowIcon: {
     color: '#162D3A',
     paddingRight: 10,
+  },
+  bodyContent: {
+    marginTop:80,
+    alignItems: 'center',
   },
 });

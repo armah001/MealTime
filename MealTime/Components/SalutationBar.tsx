@@ -4,7 +4,7 @@ import {View,StyleSheet,Text,TouchableOpacity} from 'react-native'
 const SalutationBar=()=>{
     return (
     <View style={styles.container}>
-             <Text style={styles.text}>Hi, Eric!</Text>
+             <Text style={styles.text}>Hi, Eric</Text>
         <View style={styles.logOutIcon}>
       <TouchableOpacity onPress={()=>{}}>
         <MaterialIcons name="logout" size={24} color="#162D3A" />
