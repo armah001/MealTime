@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Dimensions, Platform } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, Dimensions, Platform, ImageBackground } from "react-native";
 import { EvilIcons } from '@expo/vector-icons';
+import {Feather } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import MealBottomPopOver from './MealBottomPopOver'; // Import the edit popover component
 import { REACT_NATIVE_BASE_URL } from '@env';
 
-const MealCard = ({ data, style, color, lightColor }) => {
+const MealCard = ({ data, style, color, lightColor, imageUrl}) => {
     const [isPopoverVisible, setIsPopoverVisible] = useState(false);
     const [mealName, setMealName] = useState(data.mealName); // Initialize with existing meal data
     const [mealImage, setMealImage] = useState(data.mealImage); // Initialize with existing meal data
-
     const handleDeleteMeal = async () => {
         try {
             const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Meal/RemoveMeal?mealname=${encodeURIComponent(data.mealName)}`, {
@@ -54,34 +54,32 @@ const MealCard = ({ data, style, color, lightColor }) => {
             console.error('Error editing meal:', error);
         }
     };
-
+    const altImage = require("../assets/addmeal.png");
+    
+    const image = imageUrl || altImage;
+    
     return (
+        
         <View style={styles.container}>
             <View style={styles.firstRow}>
                 <TouchableOpacity>
                     <View style={styles.iconAndName}>
                         <View style={[styles.imageView, { backgroundColor: lightColor }]}>
-                            <SimpleLineIcons name="briefcase" size={20} color={color} />
+                       <ImageBackground source={{uri:image}} style={styles.cardImage}></ImageBackground>
+                            {/* <SimpleLineIcons name="briefcase" size={20} color={color} /> */}
                         </View>
-                        <Text style={styles.mealName}>{data.mealName}</Text>
+                        <View style={styles.textbox}>
+                            <Text style={styles.mealName} >{data.mealName}</Text>
+                        </View>                 
                     </View>
                 </TouchableOpacity>
                 <View>
-                    <TouchableOpacity>
-                        <EvilIcons name="trash" size={30} color="red" onPress={handleDeleteMeal} />
-                        <EvilIcons name="pencil" size={30} color="red" onPress={() => setIsPopoverVisible(true)} />
+                    <TouchableOpacity style={styles.iconstyle}>
+                        <Feather name="trash-2" size={20} color="red" onPress={handleDeleteMeal} />
+                        <Feather name="edit" size={20} color="red" onPress={undefined} />
                     </TouchableOpacity>
                 </View>
-            </View>
-            {isPopoverVisible && (
-                <MealBottomPopOver
-                    onCancel={() => setIsPopoverVisible(false)}
-                    onConfirm={handleEditMeal}
-                    compHeight={height * 0.5} // Adjust as needed
-                    initialMealName={mealName} // Pass current meal name to popover
-                    initialMealImage={mealImage} // Pass current meal image to popover
-                />
-            )}
+                </View>
         </View>
     );
 }
@@ -93,8 +91,9 @@ const styles = StyleSheet.create({
     container: {
         width: width * 0.9,
         height: height * 0.10,
-        paddingTop: 10,
         backgroundColor: "white",
+        alignItems: "center",
+        flexDirection: "row",
         borderColor: "#F9F9F9",
         borderRadius: 5,
         marginBottom: 20,
@@ -111,9 +110,21 @@ const styles = StyleSheet.create({
             },
         }),
     },
+    iconstyle:{
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "70%",
+    },
     mealName: {
         fontSize: 10,
         fontWeight: "500",
+        textAlign: "left"
+    },
+    textbox: {
+      
+        width: "80%",
+       
+
     },
     firstRow: {
         justifyContent: "space-between",
@@ -131,9 +142,26 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginRight: 10,
     },
+    cardImage: {
+        width: width * 0.12,
+        height: height * 0.05,
+        resizeMode: 'center',
+        borderRadius: 10, 
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:"red"
+    },
     iconAndName: {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
+        
     },
+    body: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+      }
 });

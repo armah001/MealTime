@@ -5,17 +5,10 @@ import * as ImagePicker from 'expo-image-picker';
 import CustomButton from './CustomButton';
 import { REACT_NATIVE_BASE_URL } from '@env';
 
-interface MealBottomPopOverProps {
-    onConfirm: () => Promise<void>;
-    onCancel: () => void;
-    compHeight: number;
-    initialMealName: string; // Define initialMealName as string
-    initialMealImage: string; // Define initialMealImage as string
-}
 
-const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCancel, compHeight, initialMealName, initialMealImage }) => {
-    const [mealName, setMealName] = useState(initialMealName); // Initialize with initialMealName
-    const [mealImage, setMealImage] = useState(initialMealImage); // Initialize with initialMealImage
+const MealBottomPopOver = ({ onCancel, compHeight, onConfirm }) => {
+    const [mealName, setMealName] = useState(' '); 
+    const [mealImage, setMealImage] = useState(' '); 
     const [keyboardOffset, setKeyboardOffset] = useState(new Animated.Value(0));
 
     const handleMealChange = (text: string) => {
@@ -46,6 +39,11 @@ const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCanc
         }
     };
 
+    const handleConfirmPress = () => {
+        onConfirm(mealName, mealImage); 
+        onCancel(); 
+      };
+
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
@@ -72,37 +70,12 @@ const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCanc
         }).start();
     };
 
-    const handleConfirm = async () => {
-        try {
-            const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Meal/AddMeal`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    newMeal: mealName,
-                    mealImage: mealImage,
-                }),
-            });
-
-            if (response.ok) {
-                console.log('Meal added successfully with status code:', response.status);
-                onConfirm(); // Optional: Call a callback function upon successful addition
-            } else {
-                console.log('Failed to add meal:', response.status);
-                // Handle failure scenario here if needed
-            }
-        } catch (error) {
-            console.error('Error adding meal:', error);
-            // Handle error scenario here if needed
-        }
-    };
-
+    
     return (
         <Animated.View style={[styles.mainContainer, { transform: [{ translateY: keyboardOffset }] }]}>
             <View style={styles.container}>
                 <View style={styles.cardHeader}>
-                    <Text style={styles.title}>Edit Meal</Text>
+                    <Text style={styles.title}>Add Meal</Text>
                     <TouchableOpacity style={styles.closeIcon} onPress={onCancel}>
                         <MaterialCommunityIcons name="window-close" size={24} color="black" />
                     </TouchableOpacity>
@@ -115,7 +88,7 @@ const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCanc
                             <Image source={{ uri: mealImage }} style={styles.uploadedIcon} />
                         ) : (
                             <Image style={styles.uploadIcon} source={require('../assets/addmeal.png')} />
-                        )}
+                        )}                      
                     </TouchableOpacity>
                     <Text style={styles.text}>Meal Name</Text>
                     <TextInput
@@ -126,7 +99,7 @@ const MealBottomPopOver: React.FC<MealBottomPopOverProps> = ({ onConfirm, onCanc
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <CustomButton buttonWidth={370} title='Save Changes' onPress={handleConfirm}/>
+                    <CustomButton buttonWidth={370} title='Save Changes' onPress={handleConfirmPress}/>
                 </View>
             </View>
         </Animated.View>
