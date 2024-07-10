@@ -48,7 +48,7 @@ const AdminPage: React.FC = () => {
             title:"All Meals",
             description:"View, add, edit and delete all meals",
             image:"",
-            link:"All Meals"
+            link:"AllMealPage"
         },
         {
             id:3,

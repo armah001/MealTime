@@ -64,6 +64,7 @@ const SelectionTab = (props: SelectionTabProps) => {
   };
 
   const filterMealsByDay = (meals: Meal[], day: string) => {
+    
     const filtered = meals.filter(meal => meal.daysSelection.includes(day));
     setFilteredMeals(filtered);
   };
