@@ -78,7 +78,7 @@ const AllMealPage: React.FC = () => {
         console.error('Error adding meal:', error);
         // Handle error scenario here if needed
     }
-};
+  };
 
 
   useEffect(() => {
@@ -118,6 +118,7 @@ const AllMealPage: React.FC = () => {
           onBackPress={() => navigation.goBack()}
           onAddPress={() => setShowPopOver(true)}
           title={"All Meals"}
+          nameLabel={"Add"}
         />
       </View>
       <View style={styles.line} />
@@ -228,5 +229,6 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: "center",
     width: width * 0.92,
+    paddingBottom: 50,
   },
 });

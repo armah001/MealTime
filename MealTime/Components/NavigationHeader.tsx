@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const NavigationHeader = ({ title, onBackPress, onAddPress }) => {
+const NavigationHeader = ({ title, onBackPress, onAddPress, nameLabel }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onBackPress}>
@@ -16,7 +16,7 @@ const NavigationHeader = ({ title, onBackPress, onAddPress }) => {
       <View style={styles.logOutIcon}>
         
           <MaterialIcons name="add" size={24} color="#035176" />
-        <Text style={{color:"#035176", fontSize:18}}>Add</Text>
+        <Text style={{color:"#035176", fontSize:18}}>{nameLabel}</Text>
       </View>
       </TouchableOpacity>
     </View>

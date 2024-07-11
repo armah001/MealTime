@@ -83,6 +83,7 @@ const AllMenuPage: React.FC = () => {
           onBackPress={() => navigation.goBack()}
           onAddPress={() => setShowPopOver(true)}
           title={"All Menus"}
+          nameLabel={"Add"}
         />
       </View>
       <View style={styles.line} />
