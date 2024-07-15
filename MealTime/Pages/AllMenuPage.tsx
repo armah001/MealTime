@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import BottomPopOver from '../Components/BottomPopOver';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
-import { AuthContext } from '../Components/AuthContext';
-import NavigationHeader from '../Components/NavigationHeader';
-import Loader from '../Components/Loader';
-import MenuCard from '../Components/MenuCard';
-import { getRandomColor, lightenHexColor } from '../Components/Utils/Misc';
-import { REACT_NATIVE_BASE_URL } from '@env';
-import * as SecureStore from 'expo-secure-store';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import BottomPopOver from "../Components/BottomPopOver";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../Components/AuthContext";
+import NavigationHeader from "../Components/NavigationHeader";
+import Loader from "../Components/Loader";
+import MenuCard from "../Components/MenuCard";
+import { getRandomColor, lightenHexColor } from "../Components/Utils/Misc";
+import { REACT_NATIVE_BASE_URL } from "@env";
+import * as SecureStore from "expo-secure-store";
 
 type RootStackParamList = {
   LogIn: any;
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'LogIn'>;
+type NavigationProp = StackNavigationProp<RootStackParamList, "LogIn">;
 
 const AllMenuPage: React.FC = () => {
   const { clearFields } = React.useContext(AuthContext);
@@ -28,7 +28,7 @@ const AllMenuPage: React.FC = () => {
   const handleLogout = async () => {
     await SecureStore.deleteItemAsync("accessToken");
     clearFields();
-    navigation.navigate('LogIn');
+    navigation.navigate("LogIn");
   };
 
   useEffect(() => {
@@ -36,28 +36,31 @@ const AllMenuPage: React.FC = () => {
     const fetchMenus = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${REACT_NATIVE_BASE_URL}/api/Menu/GetMenus`);
+        const response = await fetch(
+          `${REACT_NATIVE_BASE_URL}/api/Menu/GetMenus`
+        );
         if (response.ok) {
           const data = await response.json();
           //setMenus(data); // Set fetched menus to state
 
-          setMenus(data.map(menu => ({
-            ...menu,
-            menuActivated: menu.id === activeMenuId // Initialize menuActivated based on activeMenuId
-          })));
-
+          setMenus(
+            data.map((menu) => ({
+              ...menu,
+              menuActivated: menu.id === activeMenuId, // Initialize menuActivated based on activeMenuId
+            }))
+          );
         } else {
-          console.error('Failed to fetch menus:', response.status);
+          console.error("Failed to fetch menus:", response.status);
           // Handle failure scenario if needed
         }
       } catch (error) {
-        console.error('Error fetching menus:', error);
+        console.error("Error fetching menus:", error);
         // Handle error scenario if needed
       } finally {
         setIsLoading(false);
       }
     };
-    
+
     fetchMenus(); // Call fetchMenus when component mounts
   }, [activeMenuId]);
 
@@ -67,9 +70,9 @@ const AllMenuPage: React.FC = () => {
       return;
     }
     // Deactivate previously activated menu
-    const updatedMenus = menus.map(menu => ({
+    const updatedMenus = menus.map((menu) => ({
       ...menu,
-      menuActivated: menu.id === menuId
+      menuActivated: menu.id === menuId,
     }));
 
     setMenus(updatedMenus);
@@ -83,8 +86,7 @@ const AllMenuPage: React.FC = () => {
           onBackPress={() => navigation.goBack()}
           onAddPress={() => setShowPopOver(true)}
           title={"All Menus"}
-          nameLabel={"Add"}
-        />
+          nameLabel={"Add"} icon={"add"}        />
       </View>
       <View style={styles.line} />
       <View style={styles.body}>
@@ -96,19 +98,20 @@ const AllMenuPage: React.FC = () => {
             </Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={styles.menuView} 
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}>
-          
+          <ScrollView
+            contentContainerStyle={styles.menuView}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          >
             {menus.map((menu) => (
               <MenuCard
                 key={menu.id}
                 data={menu}
                 color={getRandomColor(menu.id)}
-                lightColor={lightenHexColor(getRandomColor(menu.id), 80)} 
-                style={undefined}     
-                onMenuActivate={handleMenuActivation}     
-                    />
+                lightColor={lightenHexColor(getRandomColor(menu.id), 80)}
+                style={undefined}
+                onMenuActivate={handleMenuActivation}
+              />
             ))}
           </ScrollView>
         )}
@@ -126,11 +129,11 @@ const AllMenuPage: React.FC = () => {
 
 export default AllMenuPage;
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "flex-start",
     backgroundColor: "white",
     paddingTop: 40,
@@ -139,9 +142,9 @@ const styles = StyleSheet.create({
     height: 60,
   },
   line: {
-    width: '100%',
+    width: "100%",
     height: 1,
-    backgroundColor: 'rgba(217,217,217,1)',
+    backgroundColor: "rgba(217,217,217,1)",
   },
   body: {
     alignItems: "center",
@@ -151,11 +154,11 @@ const styles = StyleSheet.create({
   },
   bodyContent: {
     marginBottom: 180,
-    alignItems: 'center',
+    alignItems: "center",
   },
   menuView: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
     width: width * 0.92,
   },
 });

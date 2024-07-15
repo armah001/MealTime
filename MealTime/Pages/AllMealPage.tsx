@@ -119,7 +119,7 @@ const AllMealPage: React.FC = () => {
           onAddPress={() => setShowPopOver(true)}
           title={"All Meals"}
           nameLabel={"Add"}
-        />
+           icon={"add"}        />
       </View>
       <View style={styles.line} />
       <View style={styles.body}>

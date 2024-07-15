@@ -118,11 +118,11 @@ const SelectionTab = (props: SelectionTabProps) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <Radio
-          data={filteredMeals}
-          checkedValue={selectedMeals[currentDayIndex]}
-          onChange={handleMealChange}
-          style={{ marginBottom: 15, fontSize: 30 }}
-        />
+                data={filteredMeals}
+                checkedValue={selectedMeals[currentDayIndex]}
+                onChange={handleMealChange}
+                style={{ marginBottom: 15, fontSize: 30 }}
+                 checkIcon={'radio-button-unchecked'}        />
         </ScrollView>
         )}
       </View>

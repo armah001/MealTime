@@ -2,7 +2,7 @@ import { View,StyleSheet, Touchable, TouchableOpacity,Text, ImageBackground ,Dim
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-const Radio=({data,checkedValue,onChange,style})=>{
+const Radio=({data,checkedValue,onChange,style, checkIcon})=>{
 
     return (
         <View style={[styles.container,style]}>
@@ -19,7 +19,7 @@ const Radio=({data,checkedValue,onChange,style})=>{
                 <View style={styles.radioView}>
                 <View style={{marginTop:18, width:23}}>
                 <MaterialIcons 
-                    name={active ? 'radio-button-checked' : 'radio-button-unchecked'} 
+                    name={active ? checkIcon : 'radio-button-unchecked'} 
                         size={24} style={styles.radio}
 />
                 </View>
