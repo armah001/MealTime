@@ -8,32 +8,157 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import CustomButton from "./CustomButton";
 
 const MenuDayCard = ({ data, style, color, lightColor, onMenuActivate }) => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.firstRow}>
-        {/* <TouchableOpacity> */}
+    <View>
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
           <View style={styles.iconAndName}>
             <Text style={styles.menuName}>Monday</Text>
           </View>
-        {/* </TouchableOpacity> */}
+        </View>
+
+        <View style={styles.secondRow}>
+          <TouchableOpacity style={styles.addMealContainer}>
+            <Feather
+              name="plus"
+              size={24}
+              color="#035176"
+              onPress={() => {
+                // Define what happens when the plus icon is pressed
+              }}
+            />
+            <Text style={styles.subText}>Add Meal(s)</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "rgba(217,217,217,0.4)",
+            width: "100%",
+            height: 1,
+          }}
+        ></View>
       </View>
 
-      <View style={styles.secondRow}>
-        <TouchableOpacity style={styles.addMealContainer}>
-          <Feather
-            name="plus"
-            size={30}
-            color="#035176"
-            onPress={() => {
-              // Define what happens when the plus icon is pressed
-            }}
-          />
-          <Text style={styles.subText}>Add Meal(s)</Text>
-        </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
+          <View style={styles.iconAndName}>
+            <Text style={styles.menuName}>Tuesday</Text>
+          </View>
+        </View>
+
+        <View style={styles.secondRow}>
+          <TouchableOpacity style={styles.addMealContainer}>
+            <Feather
+              name="plus"
+              size={24}
+              color="#035176"
+              onPress={() => {
+                // Define what happens when the plus icon is pressed
+              }}
+            />
+            <Text style={styles.subText}>Add Meal(s)</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "rgba(217,217,217,0.4)",
+            width: "100%",
+            height: 1,
+          }}
+        ></View>
+      </View>
+
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
+          <View style={styles.iconAndName}>
+            <Text style={styles.menuName}>Wednesday</Text>
+          </View>
+        </View>
+
+        <View style={styles.secondRow}>
+          <TouchableOpacity style={styles.addMealContainer}>
+            <Feather
+              name="plus"
+              size={24}
+              color="#035176"
+              onPress={() => {
+                // Define what happens when the plus icon is pressed
+              }}
+            />
+            <Text style={styles.subText}>Add Meal(s)</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "rgba(217,217,217,0.4)",
+            width: "100%",
+            height: 1,
+          }}
+        ></View>
+      </View>
+
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
+          <View style={styles.iconAndName}>
+            <Text style={styles.menuName}>Thursday</Text>
+          </View>
+        </View>
+
+        <View style={styles.secondRow}>
+          <TouchableOpacity style={styles.addMealContainer}>
+            <Feather
+              name="plus"
+              size={24}
+              color="#035176"
+              onPress={() => {
+                // Define what happens when the plus icon is pressed
+              }}
+            />
+            <Text style={styles.subText}>Add Meal(s)</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "rgba(217,217,217,0.4)",
+            width: "100%",
+            height: 1,
+          }}
+        ></View>
+      </View>
+
+      <View style={styles.container}>
+        <View style={styles.firstRow}>
+          <View style={styles.iconAndName}>
+            <Text style={styles.menuName}>Friday</Text>
+          </View>
+        </View>
+
+        <View style={styles.secondRow}>
+          <TouchableOpacity style={styles.addMealContainer}>
+            <Feather
+              name="plus"
+              size={24}
+              color="#035176"
+              onPress={() => {
+                // Define what happens when the plus icon is pressed
+              }}
+            />
+            <Text style={styles.subText}>Add Meal(s)</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.saveButton}>
+        <CustomButton
+          title="Save"
+          buttonWidth={width * 0.9}
+          onPress={undefined}
+        ></CustomButton>
       </View>
     </View>
   );
@@ -44,7 +169,7 @@ export default MenuDayCard;
 const { width, height } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
-    width: width * 0.9,
+    width: width * 0.95,
     height: height * 0.1,
     paddingTop: 10,
     backgroundColor: "white",
@@ -56,19 +181,21 @@ const styles = StyleSheet.create({
       ios: {
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
       },
       android: {
         elevation: 5,
       },
     }),
   },
+  saveButton:{
+    paddingLeft: 12,
+    paddingTop: 150 
+  },
   subText: {
     fontSize: 16,
     fontWeight: "300",
     paddingLeft: 12,
-    color:"#035176"
+    color: "#035176",
   },
   menuName: {
     fontSize: 20,
@@ -85,6 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Ensures items are in a row
     alignItems: "center", // Vertically centers items
     paddingBottom: 5,
+    paddingLeft: 6,
   },
   iconAndName: {
     justifyContent: "center",
