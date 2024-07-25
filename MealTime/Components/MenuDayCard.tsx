@@ -9,9 +9,17 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "./CustomButton";
+import { useState } from "react";
+import Loader from "./Loader";
+import SetMealDay from "./SetMealDayPopOver";
 
 const MenuDayCard = ({ data, style, color, lightColor, onMenuActivate }) => {
-  const navigation = useNavigation();
+  const [showPopOver, setShowPopOver] = useState(false);
+  const [meals, setMeals] = useState<any[]>([]);
+  const [mealName, setMealName] = useState(' '); 
+  const [mealImage, setMealImage] = useState(' '); 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
 
   return (
     <View>
@@ -28,9 +36,7 @@ const MenuDayCard = ({ data, style, color, lightColor, onMenuActivate }) => {
               name="plus"
               size={24}
               color="#035176"
-              onPress={() => {
-                // Define what happens when the plus icon is pressed
-              }}
+              onPress={() => setShowPopOver(true)}
             />
             <Text style={styles.subText}>Add Meal(s)</Text>
           </TouchableOpacity>
@@ -42,6 +48,11 @@ const MenuDayCard = ({ data, style, color, lightColor, onMenuActivate }) => {
             height: 1,
           }}
         ></View>
+            {isLoading && <Loader loading />}
+            {showPopOver && (
+          <SetMealDay  />
+        )}
+
       </View>
 
       <View style={styles.container}>
